@@ -1,0 +1,730 @@
+if(isModEnabled("ORGM")) then ORGM.Settings.UseSurvivorsPatch = false end
+
+EnabledTranslations = {}
+EnabledTranslations["EN"] = true
+EnabledTranslations["JP"] = true
+
+--weapon tables:
+MeleWeapons = {"farming.Shovel","farming.Shovel","Base.Hammer","Base.Hammer","Base.Axe","Base.BaseballBat","Base.BaseballBat","Base.Screwdriver","Base.Plank","Base.Plank","Base.PlankNail","Base.PlankNail","Base.Crowbar","Base.Crowbar","Base.Golfclub","Base.Golfclub","Base.Golfclub","Base.Pan","Base.Pan","Base.Pan","Base.HuntingKnife", "Base.Hammer","Base.Hammer","Base.Axe","Base.BaseballBat","Base.BaseballBat","Base.Screwdriver","Base.Plank","Base.Plank","Base.PlankNail","Base.PlankNail","Base.Crowbar","Base.Crowbar","Base.Golfclub","Base.Golfclub","Base.Golfclub","Base.Pan","Base.Pan","Base.Pan","Base.HuntingKnife", "Base.RollingPin"}; -- RollingPin acts as a torch, setting target on fire
+
+if(isModEnabled("ChainSaw")) then
+table.insert(MeleWeapons,"ChainSaw.ChainSaw");
+end
+
+if(isModEnabled("Hydrocraft")) then
+table.insert(MeleWeapons,"Hydrocraft.HCAluminiumbat");                          
+table.insert(MeleWeapons,"Hydrocraft.HCBaseballbatbarbedwire");
+table.insert(MeleWeapons,"Hydrocraft.HCHatchetiron");
+table.insert(MeleWeapons,"Hydrocraft.HCKnifeiron");
+table.insert(MeleWeapons,"Hydrocraft.HCKatana");
+table.insert(MeleWeapons,"Hydrocraft.HCMachete");
+table.insert(MeleWeapons,"Hydrocraft.HCMonkeywrench");
+table.insert(MeleWeapons,"Hydrocraft.HCKnifesteel");
+table.insert(MeleWeapons,"Hydrocraft.HCHatchetsteel");
+table.insert(MeleWeapons,"Hydrocraft.HCSurvivalaxe");
+table.insert(MeleWeapons,"Hydrocraft.HCWrench");
+table.insert(MeleWeapons,"Hydrocraft.HCRake");
+end
+
+
+RangeWeapons = {"Base.Pistol","Base.Pistol","Base.Shotgun","Base.Shotgun","Base.HuntingRifle","Base.VarmintRifle","Base.Pistol","Base.Pistol","Base.Shotgun","Base.Shotgun","Base.HuntingRifle","Base.VarmintRifle"};
+
+if(isModEnabled("ORGM")) then -- add some rare auto orgm guns
+table.insert(RangeWeapons,"ORGM.Mac11")
+table.insert(RangeWeapons,"ORGM.Glock17")
+table.insert(RangeWeapons,"ORGM.Ber93R")
+table.insert(RangeWeapons,"ORGM.M16")
+end
+
+OnTickTicks = 0
+SuperSurvivorSelectAnArea = false
+SuperSurvivorMouseDownTicks = 0
+function SuperSurvivorsOnTick()
+		
+		
+	if(SuperSurvivorSelectAnArea) then
+		
+	
+		if (Mouse.isLeftDown()) then SuperSurvivorMouseDownTicks = SuperSurvivorMouseDownTicks + 1
+		else SuperSurvivorMouseDownTicks = 0 end
+		
+		if (SuperSurvivorMouseDownTicks > 10) then
+		
+		
+			
+			if(Highlightcenter == nil) or (not SuperSurvivorSelectingArea) then 
+				Highlightcenter = getMouseSquare() 
+				HighlightX1 = getMouseSquareX()
+				HighlightX2 = getMouseSquareX()
+				HighlightY1 = getMouseSquareY()
+				HighlightY2 = getMouseSquareY()
+			end					
+			SuperSurvivorSelectingArea = true
+			
+			
+			if(HighlightX1 == nil) or (HighlightX1 > getMouseSquareX()) then HighlightX1 = getMouseSquareX() end
+			if(HighlightX2 == nil) or (HighlightX2 <= getMouseSquareX()) then HighlightX2 = getMouseSquareX()  end
+			if(HighlightY1 == nil) or (HighlightY1 > getMouseSquareY()) then HighlightY1 = getMouseSquareY()  end
+			if(HighlightY2 == nil) or (HighlightY2 <= getMouseSquareY()) then HighlightY2 = getMouseSquareY()  end
+		
+			
+		elseif(SuperSurvivorSelectingArea) then
+		
+			SuperSurvivorSelectingArea = false
+			print("Done:"..tostring(HighlightX1)..","..tostring(HighlightX2).." : "..tostring(HighlightY1)..","..tostring(HighlightY2))
+		end
+		
+		if (Mouse.isLeftPressed()) then SuperSurvivorSelectAreaHOLD = false end
+		
+		
+		if(HighlightX1) and (HighlightX2) then
+			local x1 = HighlightX1
+			local x2 = HighlightX2
+			local y1 = HighlightY1
+			local y2 = HighlightY2
+			
+			for xx = x1, x2 do
+			
+				for yy = y1, y2 do
+					local sq = getCell():getOrCreateGridSquare(xx,yy,getSpecificPlayer(0):getZ())
+					if(sq) and (sq:getFloor()) then sq:getFloor():setHighlighted(true) end
+				end
+			
+			end
+		end
+		
+	end
+	
+	--if getSpecificPlayer(0) ~= nil then getSpecificPlayer(0):Say(tostring(getCell()~= nil) ..",".. tostring(SSM ~= nil) ..",".. tostring(UIManager.isShowPausedMessage()) ..",".. tostring(getGameSpeed()) ) end
+	
+	if getCell() and SSM ~= nil and getGameSpeed() ~= 0 then 
+		SSM:update() 
+		OnTickTicks = OnTickTicks + 1
+		if(OnTickTicks%240==0) then 
+			--print("saving survivor map...")
+			SSGM:Save() 
+			saveSurvivorMap()
+		end
+	end
+	
+end
+Events.OnRenderTick.Add(SuperSurvivorsOnTick)
+
+
+
+function SuperSurvivorRandomSpawn(square)
+
+	
+
+	local hoursSurvived = math.floor(getGameTime():getWorldAgeHours())
+			
+
+		local ASuperSurvivor = SSM:spawnSurvivor(nil,square)
+	
+		local FinalChanceToBeHostile = ChanceToBeHostileNPC + math.floor(hoursSurvived/48)
+		if(FinalChanceToBeHostile > MaxChanceToBeHostileNPC) and (ChanceToBeHostileNPC < MaxChanceToBeHostileNPC) then FinalChanceToBeHostile = MaxChanceToBeHostileNPC end
+		
+		if(ASuperSurvivor ~= nil) then
+			if(ZombRand(100) < (ChanceToSpawnWithGun + math.floor(hoursSurvived/48))) then 
+				ASuperSurvivor:giveWeapon(getWeapon(RangeWeapons[ZombRand(1,#RangeWeapons)]),true) 				
+			elseif(ZombRand(100) < (ChanceToSpawnWithWep + math.floor(hoursSurvived/48))) then 
+				ASuperSurvivor:giveWeapon(MeleWeapons[ZombRand(1,#MeleWeapons)],true) 
+			end
+			if(ZombRand(100) < FinalChanceToBeHostile ) then ASuperSurvivor:setHostile(true) end
+		end
+
+		return ASuperSurvivor
+end
+
+function SuperSurvivorsLoadGridsquare(square)
+
+	if(square ~= nil) then
+		local x = square:getX()
+		local y = square:getY()
+		local z = square:getZ()
+		local key = x .. y .. z
+		if(SurvivorMap == nil) then
+		
+			SSM:init()
+			
+			if(doesFileExist("SurvivorMap.lua")) then 
+				SurvivorMap = loadSurvivorMap()  -- matrix grid containing info on location of all survivors for re-spawning purposes
+				print("Survivor map loaded")
+			else 
+				SurvivorMap = {} 
+				print("Survivor map set")
+			end
+			
+			SuperSurvivorBravery = SuperSurvivorGetOptionValue("Bravery")
+			SuperSurvivorSpawnRate = SuperSurvivorGetOptionValue("SpawnRate")
+			ChanceToSpawnWithGun = SuperSurvivorGetOptionValue("GunSpawnRate")
+			ChanceToSpawnWithWep = SuperSurvivorGetOptionValue("WepSpawnRate")
+			ChanceToBeHostileNPC = SuperSurvivorGetOptionValue("HostileSpawnRate")
+			MaxChanceToBeHostileNPC = SuperSurvivorGetOptionValue("HostileSpawnRate")
+			SurvivorInfiniteAmmo = SuperSurvivorGetOptionValue("InfinitAmmo")
+			SurvivorHunger = SuperSurvivorGetOptionValue("SurvivorHunger")
+			SurvivorsFindWorkThemselves = SuperSurvivorGetOptionValue("FindWork")
+			
+			
+			RaidsAtLeastEveryThisManyHours = SuperSurvivorGetOptionValue("RaidersAtLeastHours") --(60 * 24)
+			RaidsStartAfterThisManyHours = SuperSurvivorGetOptionValue("RaidersAfterHours") -- (5 * 24)
+			RaidChanceForEveryTenMinutes = SuperSurvivorGetOptionValue("RaidersChance") --(6 * 24 * 14)
+			
+			
+		end
+		
+		if(key) and (SurvivorMap[key] ~= nil) and (#SurvivorMap[key] > 0) then
+			
+			local i = 1;
+			--table.sort(SurvivorMap[key]);
+			while(SurvivorMap[key][i] ~= nil) do								
+				SSM:LoadSurvivor(SurvivorMap[key][i], square);
+				i = i + 1;		
+			end
+			i = 1;
+			while(SurvivorMap[key][i]) do								
+				table.remove(SurvivorMap[key],SurvivorMap[key][i]);			
+				i = i + 1;
+			end			
+		end
+		
+		if (square:getModData().SurvivorSquareLoaded == nil) and (not SuperSurvivorPresetSpawn(square)) then	
+		
+			SurvivorMap[key] = {} 
+			square:getModData().SurvivorSquareLoaded = true
+			local hoursSurvived = math.floor(getGameTime():getWorldAgeHours())			
+			if(SuperSurvivorSpawnRate ~= 0) and (ZombRand(SuperSurvivorSpawnRate + hoursSurvived) == 0) and (square:getZoneType() == "TownZone") then
+				
+				if(ZombRand(15) == 0) then -- spawn group
+					local hours = getGameTime():getWorldAgeHours()
+					local RaiderGroup = SSGM:newGroup()
+					local GroupSize = ZombRand(2,5) + math.floor(hours/(24*30))
+					if (GroupSize > 10) then GroupSize = 10 end
+					local oldGunSpawnChance = ChanceToSpawnWithGun 
+					ChanceToSpawnWithGun = ChanceToSpawnWithGun * 1.5
+					local groupHostility
+					local Leader
+					for i=1, GroupSize do
+					
+						raider = SuperSurvivorRandomSpawn(square)
+						if(i == 1) then 
+							RaiderGroup:addMember(raider,"Leader")
+							groupHostility = raider.player:getModData().isHostile
+							Leader = raider
+						else 
+							RaiderGroup:addMember(raider,"Guard") 
+							raider:setHostile(groupHostility)
+							raider:getTaskManager():AddToTop(FollowTask:new(raider,Leader:Get()))
+						end						
+						
+						if(raider:hasWeapon() == false) then raider:giveWeapon(MeleWeapons[ZombRand(1,#MeleWeapons)]) end
+					
+					end
+					ChanceToSpawnWithGun = oldGunSpawnChance
+					
+				else
+					SuperSurvivorRandomSpawn(square)
+				end				
+				
+			end
+		end
+	end
+
+end
+Events.LoadGridsquare.Add(SuperSurvivorsLoadGridsquare);
+
+function SuperSurvivorsInit()
+
+	GroupWindowCreate()
+	
+	SurvivorsCreatePVPButton()
+
+	if(isModEnabled("Achievement")) and (AchievementList ~= nil) then 
+		AchievementList["MakingFriends"] = {"Making Friends", "Get someone to join your group"}
+		AchievementsEnabled = true		
+	else AchievementsEnabled = false end
+
+	SurvivorTogglePVP()
+	if(IsoPlayer.getCoopPVP() == true) then SurvivorTogglePVP() end
+	
+	local player = getSpecificPlayer(0)
+	player:getModData().isHostile = false
+	player:getModData().ID = 0
+
+	if(player:getX() >= 7590 and player:getX() < 7780) and (player:getY() <= 11978 and player:getY() > 11766) then -- if spawn in prizon
+		 
+		local keyid = player:getBuilding():getDef():getKeyId();
+		
+		if(keyid) then
+		local key = player:getInventory():AddItem("Base.Key1");
+		key:setKeyId(keyid) ;
+		player:getCurrentSquare():getE():AddWorldInventoryItem(key,0.5,0.5, 0);
+		player:getInventory():Remove(key);
+		end
+		
+		local zlist = getCell():getZombieList() ;
+		if(zlist ~= nil) then
+			for i=0, zlist:size()-1 do
+				zlist:get(i):removeFromWorld();
+			end
+		end
+		
+		PVPDefault = true 	-- true or false : should pvp be on or off at game start true=on false=off
+		ChanceToSpawnWithGun = 100 	-- choose from 0 to 100 (this is a % but dont put a % after the number)
+		ChanceToBeHostileNPC = 100
+		
+		local DeadGuardSquare = getCell():getGridSquare(7685,11937,1);
+		if(DeadGuardSquare ~= nil) then
+			local SuperSurvivorDeadGuard = SSM:spawnSurvivor(false,DeadGuardSquare);
+			local DeadGuard = SuperSurvivorDeadGuard.player
+			if(isModEnabled("Hydrocraft")) then
+				DeadGuard:getInventory():AddItem("Hydrocraft.HCArmarmorswat");
+				DeadGuard:getInventory():AddItem("Hydrocraft.HCArmorswat");
+				DeadGuard:getInventory():AddItem("Hydrocraft.HCHelmswat");
+				DeadGuard:getInventory():AddItem("Hydrocraft.HCLegarmorswat");
+				DeadGuard:getInventory():AddItem("Hydrocraft.HCBootriot");
+				DeadGuard:getInventory():AddItem("Hydrocraft.HCGloveriot");
+				DeadGuard:getInventory():AddItem("Hydrocraft.HCShieldriot");
+				DeadGuard:getInventory():AddItem("Hydrocraft.HCGPS");
+			end
+			if(isModEnabled("ArmorMod")) then
+				DeadGuard:getInventory():AddItem("Armor.ArmorArmarmorswat");
+				DeadGuard:getInventory():AddItem("Armor.ArmorArmorswat");
+				DeadGuard:getInventory():AddItem("Armor.ArmorHelmswat");
+				DeadGuard:getInventory():AddItem("Armor.ArmorLegarmorswat");
+				DeadGuard:getInventory():AddItem("Armor.ArmorBootriot");
+				DeadGuard:getInventory():AddItem("Armor.ArmorGloveriot");
+				DeadGuard:getInventory():AddItem("Armor.ArmorShieldriot");
+			end
+			if(isModEnabled("ORGM")) then
+				DeadGuard:getInventory():AddItem("ORGM.Uzi");
+				DeadGuard:getInventory():AddItem("ORGM.Ammo_9x19mm_HP_Can");
+				DeadGuard:getInventory():AddItem("ORGM.Ammo_9x19mm_HP_Can");
+			else
+				DeadGuard:getInventory():AddItem("Base.Pistol");
+				DeadGuard:getInventory():AddItem("Base.BulletsBox");
+				DeadGuard:getInventory():AddItem("Base.BulletsBox");
+				DeadGuard:getInventory():AddItem("Base.BulletsBox");
+				DeadGuard:getInventory():AddItem("Base.BulletsBox");
+			end
+			
+			DeadGuard:Say("Guard: Argh!  Heart Attack!");
+			DeadGuard:Kill(nil);
+			
+		end
+		
+	end
+	
+	
+end
+Events.OnGameStart.Add(SuperSurvivorsInit)
+
+function SuperSurvivorsOnLoad()
+	
+
+	
+end
+
+Events.OnLoad.Add(SuperSurvivorsOnLoad)
+
+
+
+function SuperSurvivorsOnSwing(player,weapon)
+
+	local ID = player:getModData().ID
+	if(ID ~= nil) then
+	
+		local SS = SSM:Get(ID)
+		if(SS) then
+		
+			if(SS.roundChambered ~= nil) and (weapon:isAimedFirearm()) and (SS.roundChambered:getContainer() ~= nil) then
+				--SS:Speak("found chambered rouynd")
+				SS.roundChambered:getContainer():Remove(SS.roundChambered)
+			end
+		
+		end
+	
+	end
+
+end
+
+Events.OnWeaponSwing.Add(SuperSurvivorsOnSwing)
+
+function SuperSurvivorsHotKeyOrder(index)
+
+	local order, isListening
+			if(index <= #Orders) then
+				print("index was less than or = to #orders")
+				order = Orders[index]
+				isListening = false
+			else --single
+				print("index was greter than or = to #orders")
+				order = Orders[(index - #Orders)]
+				isListening = true
+			end
+				local myGroup = SSM:Get(0):getGroup()
+				if(myGroup) then
+					local myMembers = myGroup:getMembersInRange(SSM:Get(0):Get(),25,isListening)
+					for i=1, #myMembers do
+						SurvivorOrder(nil,myMembers[i].player,order,nil)
+					end					
+				end
+			
+
+end
+
+function supersurvivortemp(keyNum)
+
+	if(getSpecificPlayer(0)) then
+		--getSpecificPlayer(0):Say(tostring(keyNum))
+	
+		
+		if( keyNum == getCore():getKey("Spawn Wild Survivor")) then 
+		
+			--SuperSurvivorsRaiderManager()
+		
+			local ss = SuperSurvivorRandomSpawn(getSpecificPlayer(0):getCurrentSquare())
+			for i=1, 4 do ss:Get():LevelPerk(Perks.FromString("Farming")) end
+			--ss:setAIMode("FollowRoute")
+			--ss:getTaskManager():AddToTop(FollowRouteTask:new(ss,"WPToHilltop"))
+		
+		elseif( keyNum == 46) then -- c key
+		elseif( keyNum == 199) then -- home key
+			if(getSpecificPlayer(0) and getSpecificPlayer(0):getVehicle() ~= nil) then
+				--local vehicle = getSpecificPlayer(0):getVehicle()
+				--if(instanceof(vehicle,"BaseVehicle")) then
+				--	VehicleController = CarController.new(vehicle)
+				--	getSpecificPlayer(0):Say("remote control vehicle set")
+				--end
+			end
+		elseif( keyNum == 200) then -- up key
+			if(VehicleController ~= nil) then
+				getSpecificPlayer(0):Say("going up")
+				--VehicleController:accelerator(true);
+				local cc = VehicleController:getClientControls()
+				cc.forward = true
+				VehicleController:setClientControls(cc)
+			end
+		elseif( keyNum == 208) then -- down key
+			if(LastVehicle ~= nil) then
+				local cc = LastVehicle:getController():getClientControls()
+				cc.backward = true
+				LastVehicle:getController():setClientControls(cc)
+			end
+		elseif( keyNum == 203) then -- left key
+			if(LastVehicle ~= nil) then
+				local cc = LastVehicle:getController():getClientControls()
+				cc.steering = cc.steering - 1;
+				LastVehicle:getController():setClientControls(cc)
+			end
+		elseif( keyNum == 205) then -- right key
+			if(LastVehicle ~= nil) then
+				local cc = LastVehicle:getController():getClientControls()
+				cc.steering = cc.steering + 1;
+				LastVehicle:getController():setClientControls(cc)
+			end
+		elseif( keyNum == getCore():getKey("Raise Follow Distance")) then 
+			if(GFollowDistance ~= 50) then GFollowDistance = GFollowDistance + 1 end
+			getSpecificPlayer(0):Say("Spread out more("..tostring(GFollowDistance)..")")
+		elseif( keyNum == getCore():getKey("Lower Follow Distance")) then 
+			if(GFollowDistance ~= 0) then GFollowDistance = GFollowDistance - 1 end			
+			getSpecificPlayer(0):Say("Stay closer("..tostring(GFollowDistance)..")")
+	
+
+		elseif( keyNum == 0) then
+		
+			local attacker = getSpecificPlayer(0)
+			local victim = getSpecificPlayer(0)
+			local weapon = attacker:getPrimaryHandItem()
+			local angle = getSpecificPlayer(0):getAngle()
+			local dir = IsoDirections.fromAngle(angle)
+			dir = IsoDirections.reverse(dir)
+			getSpecificPlayer(0):Say("reverse facing dir is: " ..tostring(dir))
+			 
+			local victimSquare1 = getSpecificPlayer(0):getCurrentSquare()
+			local victimSquare2 = victimSquare1:getTileInDirection(dir)
+			local coveredFire = false
+			for q=1,2 do
+				
+				local objs
+				if q == 1 then objs = victimSquare2:getObjects()
+				else objs = victimSquare1:getObjects() end
+				
+				local aimingPerk = attacker:getPerkLevel(Perks.Aiming) 
+				local hitChance = weapon:getHitChance() + weapon:getAimingPerkHitChanceModifier() * aimingPerk
+				local movePenalty = attacker:getBeenMovingFor() - (weapon:getAimingTime() + aimingPerk * 2)
+				if movePenalty < 0 then movePenalty = 0 end
+				if attacker:HasTrait("Marksman") then hitChance = hitChance + 20 end
+				
+				for i=1, objs:size() do
+					if(objs:get(i)) then 
+						if ZombRand(100) > getCoverValue(objs:get(i)) then
+							coveredFire = true
+							break
+						end
+						--getSpecificPlayer(0):Say(tostring(objs:get(i):getObjectName())) 
+					end
+				end
+				if(coveredFire) then break end
+			end
+			
+			getSpecificPlayer(0):Say(tostring(coveredFire)) 
+		
+		elseif( keyNum == getCore():getKey("Call Closest Non-Group Member")) then
+		
+		
+		
+		
+			local mySS = SSM:Get(0)
+			
+			local SS = SSM:GetClosestNonParty()
+			if(SS) then
+				mySS:Speak(getText("ContextMenu_SD_HeyYou"))
+				SS:getTaskManager():AddToTop(ListenTask:new(SS,mySS:Get(),false))
+			end
+			
+			
+			
+		elseif( keyNum == getCore():getKey("Toggle Group Window")) then -- 
+			myGroupWindow:setVisible(not myGroupWindow:getIsVisible())
+			if(myGroupWindow:getIsVisible()) then myGroupWindow:Update()
+			else mySurvivorInfoWindow:setVisible(false) end
+		
+		
+		elseif( keyNum == getCore():getKey("Ask Closest Group Member to Follow")) then 
+		
+			local mySS = SSM:Get(0)
+			if(mySS:getGroupID() ~= nil) then
+				local myGroup = SSGM:Get(mySS:getGroupID())
+				if(myGroup ~= nil) then
+					
+					local member = myGroup:getClosestMember(nil,mySS:Get())
+					if(member) then
+						mySS:Get():Say(getText("ContextMenu_SD_ComeWithMe_Before") .. member:Get():getForname() .. getText("ContextMenu_SD_ComeWithMe_After"))
+						member:getTaskManager():clear()
+						member:getTaskManager():AddToTop(FollowTask:new(member,mySS:Get()))
+					else
+						print("getClosestMember returned nil")
+					end
+				else
+					mySS:DebugSay("no group")
+					print("cant call close member bc no group for player detected")
+				end
+			end
+		
+		elseif( keyNum == getCore():getKey("Call Closest Group Member")) then -- t key
+			
+			local mySS = SSM:Get(0)
+			if(mySS:getGroupID() ~= nil) then
+				local myGroup = SSGM:Get(mySS:getGroupID())
+				if(myGroup ~= nil) then
+					
+					local member = myGroup:getClosestMember(nil,mySS:Get())
+					if(member) then
+						mySS:Get():Say(member:Get():getForname()..", come here.")
+						member:getTaskManager():AddToTop(ListenTask:new(member,mySS:Get(),false))
+					else
+						print("getClosestMember returned nil")
+					end
+				else
+					mySS:DebugSay("no group")
+					print("cant call close member bc no group for player detected")
+				end
+			end
+		elseif( keyNum == 1) then -- esc key
+			SSGM:Save()
+			saveSurvivorMap()
+		
+		elseif( keyNum == getCore():getKey("SSHotkey_1")) then -- esc key
+			local index = SuperSurvivorGetOption("SSHotkey1")
+			SuperSurvivorsHotKeyOrder(index)			
+		elseif( keyNum == getCore():getKey("SSHotkey_2")) then -- esc key
+			local index = SuperSurvivorGetOption("SSHotkey2")
+			SuperSurvivorsHotKeyOrder(index)
+		elseif( keyNum == getCore():getKey("SSHotkey_3")) then -- esc key
+			local index = SuperSurvivorGetOption("SSHotkey3")
+			SuperSurvivorsHotKeyOrder(index)			
+		elseif( keyNum == getCore():getKey("SSHotkey_4")) then -- esc key
+			local index = SuperSurvivorGetOption("SSHotkey4")
+			SuperSurvivorsHotKeyOrder(index)
+		elseif( keyNum == 49) then 
+			if(getSpecificPlayer(0):isForceOverrideAnim()) then
+				getSpecificPlayer(0):setForceOverrideAnim(false)
+				getSpecificPlayer(0):getModData().ForceAnim = nil
+				getSpecificPlayer(0):Say("anim un set")
+			else
+				getSpecificPlayer(0):Say("anim set")
+				getSpecificPlayer(0):getModData().ForceAnim = "Walk_Aim_Bat"
+				getSpecificPlayer(0):setForceOverrideAnim(true)
+			end
+		end
+	end
+
+end
+
+Events.OnKeyPressed.Add(supersurvivortemp);
+
+function SuperSurvivorsOnEquipPrimary(player,weapon)
+
+	if(player:isLocalPlayer() == false) then
+		local ID = player:getModData().ID
+		local SS = SSM:Get(ID)
+		SS.UsingFullAuto = false
+		
+		if (weapon ~= nil) and (instanceof(weapon,"HandWeapon")) then
+		
+			SS.AttackRange = ((player:getPrimaryHandItem():getMaxRange() + player:getPrimaryHandItem():getMinRange())*0.60)	
+			
+			if (weapon:isAimedFirearm()) then
+				local ammotypes = getAmmoBullets(weapon,false);			
+				
+				if(ammotypes ~= nil) and (ID ~= nil) then 
+					
+					SS.AmmoTypes = ammotypes
+					player:getModData().ammotype = ""
+					player:getModData().ammoBoxtype = ""
+					for i=1, #SS.AmmoTypes do
+						SS.AmmoBoxTypes[i] = getAmmoBox(SS.AmmoTypes[i])
+						player:getModData().ammotype = player:getModData().ammotype .. " " .. SS.AmmoTypes[i]
+						player:getModData().ammoBoxtype = player:getModData().ammoBoxtype .. " " .. SS.AmmoBoxTypes[i]
+					end
+							
+					
+					SS.LastGunUsed = weapon
+					
+					if (isModEnabled("ORGM")) then
+					
+						local data = ORGM.getFirearmData(weapon:getType())
+						if (data ~= nil) and (data.selectFire or data.alwaysFullAuto) then
+							SS.UsingFullAuto = true
+						end
+					
+					end
+					
+				end
+			end
+			
+		end
+		
+	end
+end
+
+Events.OnEquipPrimary.Add(SuperSurvivorsOnEquipPrimary);
+
+
+function SuperSurvivorsRaiderManager()
+	
+	if(getSpecificPlayer(0):getModData().LastRaidTime == nil) then getSpecificPlayer(0):getModData().LastRaidTime = (RaidsStartAfterThisManyHours + 2) end
+	local LastRaidTime = getSpecificPlayer(0):getModData().LastRaidTime
+	
+	--rediculous amount of raiders ---
+	--RaidsAtLeastEveryThisManyHours = 1
+	--RaidsStartAfterThisManyHours = 0
+	--RaidChanceForEveryTenMinutes = 4
+	--rediculous amount of raiders ---	END
+
+	local mySS = SSM:Get(0)
+	local hours = math.floor(getGameTime():getWorldAgeHours())
+	local chance = RaidChanceForEveryTenMinutes
+	if(not mySS:isInBase()) then chance = (RaidChanceForEveryTenMinutes*1.5) end
+	
+	local RaidersStartTimePassed = (hours >= RaidsStartAfterThisManyHours)
+	local RaiderResult = (ZombRand(chance) == 0)
+	local RaiderAtLeastTimedExceeded = ((hours - LastRaidTime) >= RaidsAtLeastEveryThisManyHours)
+	
+	print("Last raid time is: "..tostring(LastRaidTime)..". Current time is:"..tostring(hours))
+	print("Raiders start time is passed?: "..tostring(RaidersStartTimePassed))
+	print("chance for raiders is 1 in "..tostring(chance).." result is "..tostring(RaiderResult))
+	print("At least this many days (".. tostring(RaidsAtLeastEveryThisManyHours) ..") time exceeded: "..tostring(RaiderAtLeastTimedExceeded))
+	
+	if RaidersStartTimePassed and ( RaiderResult or RaiderAtLeastTimedExceeded ) then
+		
+		--getSpecificPlayer(0):Say("starting the raider spawn")
+		
+		local hisGroup = mySS:getGroup()
+		local bounds = hisGroup:getBounds()
+		local center
+		if(bounds) then center = getCenterSquareFromArea(bounds[1],bounds[2],bounds[3],bounds[4],bounds[5]) end
+		if not center then center = getSpecificPlayer(0):getCurrentSquare() end
+		
+		local spawnSquare
+		
+		local success = false
+		local range = 45
+		local drange = range*2
+		
+		for i=1,10 do		
+			
+			local spawnLocation = ZombRand(4)
+			if(spawnLocation ==0) then
+				--mySS:Speak("spawn from north")
+				x = center:getX() + (ZombRand(drange) - range);
+				y = center:getY() - range;
+				
+			elseif(spawnLocation ==1) then 
+				--mySS:Speak("spawn from east")
+				x = center:getX() + range;
+				y = center:getY() + (ZombRand(drange) - range);	
+			elseif(spawnLocation ==2) then 
+				--mySS:Speak("spawn from south")
+				x = center:getX() + (ZombRand(drange) - range);
+				y = center:getY() + range;
+			
+			elseif(spawnLocation ==3) then 
+				--mySS:Speak("spawn from west")
+				x = center:getX() - range;
+				y = center:getY() + (ZombRand(drange) - range);	
+		
+			end
+		
+			spawnSquare = getCell():getOrCreateGridSquare(x,y,0)
+			
+			if (spawnSquare ~= nil) and (not hisGroup:IsInBounds(spawnSquare)) and spawnSquare:isOutside() and (not spawnSquare:IsOnScreen()) then 
+				success = true
+				break
+			end
+		
+		end
+		
+		
+		if(success) and (spawnSquare) then
+			getSpecificPlayer(0):getModData().LastRaidTime = hours
+			if(getSpecificPlayer(0):isAsleep()) then 
+				getSpecificPlayer(0):Say("I gotta bad feeling")
+				getSpecificPlayer(0):forceAwake()
+			end
+			local RaiderGroup = SSGM:newGroup()
+			local GroupSize = ZombRand(2,5) + math.floor(hours/(24*30))
+			if (GroupSize > 10) then GroupSize = 10 end
+			local oldGunSpawnChance = ChanceToSpawnWithGun 
+			ChanceToSpawnWithGun = ChanceToSpawnWithGun * 1.5
+		
+			for i=1, GroupSize do
+			
+				raider = SuperSurvivorRandomSpawn(spawnSquare)
+				if(i == 1) then RaiderGroup:addMember(raider,"Leader")
+				else RaiderGroup:addMember(raider,"Guard") end
+				raider:setHostile(true)
+				local name = raider:getName()
+				raider:setName("Raider "..name)
+				raider:getTaskManager():AddToTop(PursueTask:new(raider,mySS:Get()))
+				if(raider:hasWeapon() == false) then raider:giveWeapon(MeleWeapons[ZombRand(1,#MeleWeapons)]) end
+			
+			end
+			ChanceToSpawnWithGun = oldGunSpawnChance
+			RaiderGroup:AllSpokeTo()
+			
+		end
+		
+		
+	
+	end
+
+
+end
+
+
+Events.EveryTenMinutes.Add(SuperSurvivorsRaiderManager);
+
+
+

@@ -1,0 +1,65 @@
+module Survivors
+{
+	imports
+	{
+		Base, farming
+	}
+
+
+	 item Grave
+    {
+        Type = Normal,
+        DisplayName = Grave,
+        Icon = grave,
+        Weight = 50,
+		Tooltip = RIP,
+		ResizeWorldIcon = 0.4,
+    }
+	 item GraveCross
+    {
+        Type = Normal,
+        DisplayName = Grave,
+        Icon = gravecross,
+        Weight = 50,
+		Tooltip = RIP,
+		ResizeWorldIcon = 0.4,
+    }
+
+	recipe Dig Grave
+    {
+    	CorpseMale/CorpseFemale,
+		keep Shovel,
+    	Result:Grave,
+    	Category:Survivors,
+		Sound:digging,
+    	Time:500.0,
+    }
+	recipe Add Cross to Grave
+    {
+		Grave,
+    	Plank=2,
+		Nails,
+		keep Hammer,
+    	Result:GraveCross,
+    	Category:Survivors,
+		Sound:PZ_Hammer,
+		CanBeDoneFromFloor:true,
+    	Time:100.0,
+    }
+	
+	
+	recipe Dig Grave with Cross
+    {
+    	CorpseMale/CorpseFemale,
+		Plank=2,
+		Nails,
+		keep Hammer,
+		keep Shovel,
+    	Result:GraveCross,
+    	Category:Survivors,
+		Sound:digging,
+    	Time:500.0,
+    }
+	
+
+}
