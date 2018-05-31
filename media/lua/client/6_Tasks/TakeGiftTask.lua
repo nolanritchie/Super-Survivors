@@ -10,7 +10,8 @@ function TakeGiftTask:new(superSurvivor, gift)
 	o.parent = superSurvivor
 	o.Name = "Take Gift"
 	o.TheGift = gift
-	
+	o.DestContainer = superSurvivor:getBag()
+	if(isItemWater(gift)) then o.DestContainer = superSurvivor:Get():getInventory() end
 	o.SrcContainer = nil
 	o.OnGoing = false
 	o.Ticks = 0
@@ -22,8 +23,8 @@ end
 
 function TakeGiftTask:isComplete()
 	if(self.Complete) then
-		if(self.parent:getBag():FindAndReturnCategory("Weapon") ~= nil) and (self.parent:Get():getPrimaryHandItem() == nil) then
-			self.parent:Get():setPrimaryHandItem(self.parent:getBag():FindAndReturnCategory("Weapon"))
+		if(self.DestContainer:FindAndReturnCategory("Weapon") ~= nil) and (self.parent:Get():getPrimaryHandItem() == nil) then
+			self.parent:Get():setPrimaryHandItem(self.DestContainer:FindAndReturnCategory("Weapon"))
 		end
 	end
 	return self.Complete
@@ -64,11 +65,11 @@ function TakeGiftTask:update()
 		end
 		local distance = getDistanceBetween(self.parent:Get(), sq)
 			
-		if(not self.parent:getBag():contains(self.TheGift)) and (distance < 2.0) then
+		if(not self.DestContainer:contains(self.TheGift)) and (distance < 2.0) then
 			self.parent:Speak("*" .. getText("ContextMenu_SD_Takes_Before") .. self.TheGift:getDisplayName() .. getText("ContextMenu_SD_Takes_After") .. "*")
 			
 			if(self.SrcContainer == "Ground") then
-				self.parent:getBag():AddItem(self.TheGift)
+				self.DestContainer:AddItem(self.TheGift)
 				self.TheGift:getWorldItem():getSquare():removeWorldObject(self.TheGift:getWorldItem())
 				if(self.TheGift:getWorldItem() ~= nil) then self.TheGift:getWorldItem():removeFromSquare() end
 				self.TheGift:setWorldItem(nil)
@@ -86,7 +87,7 @@ function TakeGiftTask:update()
 			else
 				ISTimedActionQueue.add(ISInventoryTransferAction:new (self.parent.player, self.TheGift, self.TheGift:getContainer(), self.parent:getBag(), 20))
 			end
-		elseif(self.parent:getBag():contains(self.TheGift)) then
+		elseif(self.DestContainer:contains(self.TheGift)) then
 						
 			self.parent:Speak(getSpeech("Thanks"))
 			self.Complete = true
