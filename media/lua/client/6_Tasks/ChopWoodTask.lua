@@ -65,7 +65,7 @@ function ChopWoodTask:update()
 			
 			--local cell = getSpecificPlayer(0):getCell();
 			if(self.Tree == nil or self.Tree:getHealth() <= 0) then
-				local range = 13;
+				local range = 25;
 				local Square, closestsoFarSquare;
 				local minx=math.floor(player:getX() - range);
 				local maxx=math.floor(player:getX() + range);
@@ -81,18 +81,7 @@ function ChopWoodTask:update()
 						miny=choparea[3]
 						maxy=choparea[4]
 						sstring = " in the designated area"--..tostring(minx)..","..tostring(miny)..":"..tostring(maxx)..","..tostring(maxy)
-						range = 100
-						if(self.WalkedToDesignatedArea == false) then 
-							local center = getCenterSquareFromArea(minx,maxx,miny,maxy,0)
-							
-							if(isSquareInArea(self.parent.player,choparea) == false) then
-								self.parent:walkTo(center)
-								return false
-							else
-								self.WalkedToDesignatedArea = true
-							end
-						end
-						
+						range = 150
 					end
 				end
 				

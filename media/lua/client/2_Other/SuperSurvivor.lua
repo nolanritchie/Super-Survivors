@@ -1957,7 +1957,17 @@ function SuperSurvivor:FindThisNearBy(itemType, TypeOrCategory)
 			
 end
 
+function SuperSurvivor:ensureInInv(item)
 
+	if(self:getBag():contains(item)) then self:getBag():Remove(item) end
+	if(item:getWorldItem() ~= nil) then
+		item:getWorldItem():removeFromSquare()
+		item:setWorldItem(nil)
+	end
+	if(not self:Get():getInventory():contains(item)) then self:Get():getInventory():AddItem(item) end
+
+	return item
+end
 
 ------------------armor mod functions-------------------
 

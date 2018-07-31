@@ -72,7 +72,7 @@ function EatFoodTask:update()
 				self.TheFood:getWorldItem():removeFromSquare()
 				self.TheFood:setWorldItem(nil)
 			else
-				self.TheFood = nil
+				self.parent:ensureInInv(self.TheFood)
 			end
 		elseif(self.EatingStarted == false) and (self.parent.player:getInventory():contains(self.TheFood)) then
 			
@@ -85,18 +85,21 @@ function EatFoodTask:update()
 					self.parent.player:getInventory():Remove(self.TheFood)
 					self.parent.player:getInventory():DoRemoveItem(self.TheFood)
 					self.TheFood = openCan
+					HungerChange = self.TheFood:getHungChange()
 				end
 			end
 			
+			local hunger = self.parent.player:getStats():getHunger()
 			local eatthisMuch = 0.25
-			if ((HungerChange / 100) * 0.25) > self.parent.player:getStats():getHunger() then eatthisMuch = 0.25
-			elseif ((HungerChange / 100) * 0.50) > self.parent.player:getStats():getHunger() then eatthisMuch  = 0.50
-			elseif ((HungerChange / 100) * 0.75) > self.parent.player:getStats():getHunger() then eatthisMuch = 0.75
-			else eatthisMuch = 1.00 end			
+			if (((HungerChange * 0.25) + hunger) < 0.15)  then eatthisMuch = 0.25
+			elseif (((HungerChange * 0.50) + hunger) < 0.15) then eatthisMuch  = 0.50
+			elseif (((HungerChange * 0.75) + hunger) < 0.15) then eatthisMuch = 0.75
+			else eatthisMuch = 1.00 end	
+			print(tostring(hunger)..","..tostring(HungerChange)..","..tostring(eatthisMuch))
 		
 			self.parent:Speak(getText("ContextMenu_SD_EatFood_Before") .. self.TheFood:getDisplayName() .. getText("ContextMenu_SD_EatFood_After"));
 			ISTimedActionQueue.add(ISEatFoodAction:new(self.parent.player,self.TheFood,eatthisMuch))
-			self.parent.player:getStats():setHunger(self.parent.player:getStats():getHunger() + self.TheFood:getHungChange());
+			--self.parent.player:getStats():setHunger(self.parent.player:getStats():getHunger() + self.TheFood:getHungChange());
 			--self.parent.player:getInventory():Remove(self.TheFood)	
 			self.EatingStarted = true
 		else

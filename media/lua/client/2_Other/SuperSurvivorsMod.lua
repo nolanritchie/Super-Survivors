@@ -354,11 +354,9 @@ function SuperSurvivorsHotKeyOrder(index)
 
 	local order, isListening
 			if(index <= #Orders) then
-				print("index was less than or = to #orders")
 				order = Orders[index]
 				isListening = false
 			else --single
-				print("index was greter than or = to #orders")
 				order = Orders[(index - #Orders)]
 				isListening = true
 			end
@@ -384,18 +382,15 @@ function supersurvivortemp(keyNum)
 			--SuperSurvivorsRaiderManager()
 		
 			local ss = SuperSurvivorRandomSpawn(getSpecificPlayer(0):getCurrentSquare())
-			for i=1, 4 do ss:Get():LevelPerk(Perks.FromString("Farming")) end
+			--for i=1, 4 do ss:Get():LevelPerk(Perks.FromString("Farming")) end
 			--ss:setAIMode("FollowRoute")
 			--ss:getTaskManager():AddToTop(FollowRouteTask:new(ss,"WPToHilltop"))
 		
 		elseif( keyNum == 46) then -- c key
 		elseif( keyNum == 199) then -- home key
-			if(getSpecificPlayer(0) and getSpecificPlayer(0):getVehicle() ~= nil) then
-				--local vehicle = getSpecificPlayer(0):getVehicle()
-				--if(instanceof(vehicle,"BaseVehicle")) then
-				--	VehicleController = CarController.new(vehicle)
-				--	getSpecificPlayer(0):Say("remote control vehicle set")
-				--end
+			if (getSpecificPlayer(0)) then
+				local GroupId = SSGM:GetGroupIdFromSquare(getSpecificPlayer(0):getCurrentSquare())
+				getSpecificPlayer(0):Say(tostring(GroupId))
 			end
 		elseif( keyNum == 200) then -- up key
 			if(VehicleController ~= nil) then
@@ -547,7 +542,7 @@ function supersurvivortemp(keyNum)
 		elseif( keyNum == getCore():getKey("SSHotkey_4")) then -- esc key
 			local index = SuperSurvivorGetOption("SSHotkey4")
 			SuperSurvivorsHotKeyOrder(index)
-		elseif( keyNum == 49) then 
+		elseif( keyNum == 0) then 
 			if(getSpecificPlayer(0):isForceOverrideAnim()) then
 				getSpecificPlayer(0):setForceOverrideAnim(false)
 				getSpecificPlayer(0):getModData().ForceAnim = nil

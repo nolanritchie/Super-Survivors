@@ -123,7 +123,7 @@ function AIManager(TaskMangerIn)
 				local medicalarea = HisGroup:getGroupArea("MedicalStorageArea")
 				
 				local gotoSquare
-				if(medicalarea) and (medicalarea[1] ~= 0) then gotoSquare = getCenterSquareFromArea(medicalarea) end
+				if(medicalarea) and (medicalarea[1] ~= 0) then gotoSquare = getCenterSquareFromArea(medicalarea[1],medicalarea[2],medicalarea[3],medicalarea[4],medicalarea[5]) end
 				if(not gotoSquare) then gotoSquare = CenterBaseSquare end
 				
 				if(gotoSquare ) then ASuperSurvivor:walkTo(gotoSquare) end
@@ -152,7 +152,7 @@ function AIManager(TaskMangerIn)
 							local baseBounds = HisGroup:getBounds()
 							local dropSquare = getCell():getOrCreateGridSquare(baseBounds[1]-5,baseBounds[3]-5,0)
 							local storagearea = HisGroup:getGroupArea("CorpseStorageArea")
-							if(storagearea[1] ~= 0) then dropSquare = getCenterSquareFromArea(storagearea[1],storagearea[2],storagearea[3],storagearea[4]) end
+							if(storagearea[1] ~= 0) then dropSquare = getCenterSquareFromArea(storagearea[1],storagearea[2],storagearea[3],storagearea[4],storagearea[5]) end
 							if(dropSquare) then
 								TaskMangerIn:AddToTop(PileCorpsesTask:new(ASuperSurvivor,dropSquare)) 
 								TaskMangerIn:setTaskUpdateLimit(AutoWorkTaskTimeLimit)
@@ -272,6 +272,25 @@ function AIManager(TaskMangerIn)
 			TaskMangerIn:AddToTop(WanderInBuildingTask:new(ASuperSurvivor,ASuperSurvivor:getBuilding()))
 			TaskMangerIn:AddToTop(LockDoorsTask:new(ASuperSurvivor,true))
 			TaskMangerIn:AddToTop(BarricadeBuildingTask:new(ASuperSurvivor))
+			--ASuperSurvivor:Speak("This will be my base.")
+			local GroupId = SSGM:GetGroupIdFromSquare(ASuperSurvivor:Get():getCurrentSquare())
+			--ASuperSurvivor:Speak(tostring(GroupId))
+			if(GroupId == -1) then -- if the base this npc is gonna stay in is not declared as another base then they set it as thier base.
+				local nGroup = SSGM:newGroup()					
+				nGroup:addMember(ASuperSurvivor,"Leader")
+				local def = ASuperSurvivor:getBuilding():getDef()
+				local bounds = {def:getX()-1,(def:getX() + def:getW()+1 ), def:getY()-1,(def:getY() + def:getH()+1),0}
+				nGroup:setBounds(bounds)
+				--ASuperSurvivor:Speak(tostring(nGroup:getID()))
+			else
+				local OwnerGroup = SSGM:Get(GroupId)
+				local LeaderID = OwnerGroup:getLeader()
+				if(LeaderID ~= 0) then
+					OwnerGroup:addMember(ASuperSurvivor,"Worker")
+					--ASuperSurvivor:Speak("Please let me stay here")
+				end
+			end
+			
 		end
 		
 		

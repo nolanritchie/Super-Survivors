@@ -193,12 +193,7 @@ function LootCategoryTask:update()
 				
 					local item = self.Container					
 					self.FoundCount = self.FoundCount + 1
-					
-					if(item:getWorldItem():getSquare():getModData().Group ~= nil) and (item:getWorldItem():getSquare():getModData().Group ~= self.parent:getGroupID()) then
-						print("survivor is stealing detected! ny member of group "..tostring(self.parent:getGroupID()) .. " was stealing stuff from group:"..tostring(item:getWorldItem():getSquare():getModData().Group))
-						SSGM:Get(item:getWorldItem():getSquare():getModData().Group):stealingDetected(self.parent.player)
-					end
-					
+										
 					self.parent:Speak(getText("ContextMenu_SD_TakesFromGround_Before") .. item:getDisplayName() .. getText("ContextMenu_SD_TakesFromGround_After"))
 					local srcContainer = item:getContainer()
 					if instanceof(srcContainer,"ItemContainer") then
@@ -207,6 +202,23 @@ function LootCategoryTask:update()
 						item:getWorldItem():removeFromSquare()
 						item:setWorldItem(nil)
 						self.Container = nil
+						
+						if(item ~= nil) then
+		
+							local ssquare = getSourceSquareOfItem(item,self.parent.player)
+							print(tostring(ssquare))
+							if(ssquare ~= nil) then
+								local OwnerGroupId = SSGM:GetGroupIdFromSquare(ssquare)
+								local TakerGroupId = self.parent.player:getModData().Group
+								if(OwnerGroupId ~= -1) and (TakerGroupId ~= OwnerGroupId) then
+									print("ga stealing detected!")
+									SSGM:Get(OwnerGroupId):stealingDetected(self.parent.player)
+								end
+							end		
+							
+							
+						end
+						
 					end
 					
 					
