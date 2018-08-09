@@ -294,7 +294,7 @@ function SuperSurvivorGroup:addMember(newSurvivor, Role)
 	
 	local currentGroup = newSurvivor:getGroup()
 	if(currentGroup) then
-		currentGroup:removeMember(newSurvivor)
+		currentGroup:removeMember(newSurvivor:getID())
 		print("removed from current group")
 	else
 		print("no current group")
@@ -334,10 +334,12 @@ function SuperSurvivorGroup:removeMember(ID)
 	
 	if(has_value(self.Members,ID)) then
 		
-		local index
-		for i=1,#self.Members do
-			if(ID == self.Members[i]) then table.remove(self.Members,i) end
-		end
+		--local index
+		--for i=1,#self.Members do
+		--	if(ID == self.Members[i]) then 
+				table.remove(self.Members,ID) 
+		--	end
+		--end
 		
 	end
 	

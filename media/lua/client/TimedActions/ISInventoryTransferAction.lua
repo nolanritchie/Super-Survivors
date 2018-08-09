@@ -153,7 +153,7 @@ function ISInventoryTransferAction:perform()
 	if(self.item ~= nil) then
 		
 		local ssquare = getSourceSquareOfItem(self.item,self.character)
-		print(tostring(ssquare))
+		--print(tostring(ssquare))
 		if(ssquare ~= nil) then
 			local OwnerGroupId = SSGM:GetGroupIdFromSquare(ssquare)
 			local TakerGroupId = self.character:getModData().Group

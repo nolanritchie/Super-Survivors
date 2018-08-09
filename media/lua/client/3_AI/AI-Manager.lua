@@ -131,8 +131,9 @@ function AIManager(TaskMangerIn)
 				return TaskMangerIn
 			
 			elseif(ASuperSurvivor:getGroupRole() == "Worker") then
-				
+				print("yes im a worker")
 				if(SurvivorsFindWorkThemselves) and (RainManager.isRaining() == false) then
+				print("yes i should look for work")
 					if(SafeToGoOutAndWork) then
 						TaskMangerIn:setTaskUpdateLimit(AutoWorkTaskTimeLimit)
 						local randresult = ZombRand(5) + 1

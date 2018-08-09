@@ -627,10 +627,10 @@ function SuperSurvivorsRaiderManager()
 	local RaiderResult = (ZombRand(chance) == 0)
 	local RaiderAtLeastTimedExceeded = ((hours - LastRaidTime) >= RaidsAtLeastEveryThisManyHours)
 	
-	print("Last raid time is: "..tostring(LastRaidTime)..". Current time is:"..tostring(hours))
-	print("Raiders start time is passed?: "..tostring(RaidersStartTimePassed))
-	print("chance for raiders is 1 in "..tostring(chance).." result is "..tostring(RaiderResult))
-	print("At least this many days (".. tostring(RaidsAtLeastEveryThisManyHours) ..") time exceeded: "..tostring(RaiderAtLeastTimedExceeded))
+	--print("Last raid time is: "..tostring(LastRaidTime)..". Current time is:"..tostring(hours))
+	--print("Raiders start time is passed?: "..tostring(RaidersStartTimePassed))
+	--print("chance for raiders is 1 in "..tostring(chance).." result is "..tostring(RaiderResult))
+	--print("At least this many days (".. tostring(RaidsAtLeastEveryThisManyHours) ..") time exceeded: "..tostring(RaiderAtLeastTimedExceeded))
 	
 	if RaidersStartTimePassed and ( RaiderResult or RaiderAtLeastTimedExceeded ) then
 		
