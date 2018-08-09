@@ -145,7 +145,7 @@ function AIManager(TaskMangerIn)
 							ASuperSurvivor:Speak(getText("ContextMenu_SD_IGoGetWood"))
 							local dropSquare = CenterBaseSquare
 							local woodstoragearea = HisGroup:getGroupArea("WoodStorageArea")
-							if(woodstoragearea[1] ~= 0) then dropSquare = getCenterSquareFromArea(woodstoragearea[1],woodstoragearea[2],woodstoragearea[3],woodstoragearea[4]) end
+							if(woodstoragearea[1] ~= 0) then dropSquare = getCenterSquareFromArea(woodstoragearea[1],woodstoragearea[2],woodstoragearea[3],woodstoragearea[4],woodstoragearea[5]) end
 							TaskMangerIn:AddToTop(GatherWoodTask:new(ASuperSurvivor,dropSquare)) 
 							TaskMangerIn:setTaskUpdateLimit(AutoWorkTaskTimeLimit)
 						elseif(randresult == 3) then
