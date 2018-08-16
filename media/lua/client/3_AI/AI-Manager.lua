@@ -70,6 +70,7 @@ function AIManager(TaskMangerIn)
 				local area = HisGroup:getGroupAreaCenterSquare("FoodStorageArea")
 				if(area) then ASuperSurvivor:walkTo(area) end
 			end	
+			print("FindThisTask Food added")
 			TaskMangerIn:AddToTop(FindThisTask:new(ASuperSurvivor, "Food", "Category", 1))
 		elseif (ASuperSurvivor:hasFood()) then
 			TaskMangerIn:AddToTop(EatFoodTask:new(ASuperSurvivor,ASuperSurvivor:getFood()))
@@ -106,146 +107,147 @@ function AIManager(TaskMangerIn)
 	
 	
 	-------------If in base tasks ----------------------------------------
-	SafeToGoOutAndWork = true
-	
-	if(RainManager.isRaining()) and (ASuperSurvivor:Get():isOutside()) and (TaskMangerIn.TaskUpdateLimit ~= 0) and (TaskMangerIn:getCurrentTask() ~= "Enter New Building") and (TaskMangerIn:getCurrentTask() ~= "Find Building") then
-		ASuperSurvivor:Speak(getText("ContextMenu_SD_RainingGoInside"))
-		TaskMangerIn:clear()
-		TaskMangerIn:AddToTop(AttemptEntryIntoBuildingTask:new(ASuperSurvivor,nil))
-		TaskMangerIn:AddToTop(FindBuildingTask:new(ASuperSurvivor))
-	end
-	
-	if (ASuperSurvivor:getCurrentTask() == "None") and (IsInBase) and (not IsInAction) and (ZombRand(4)==0) then
-			local AutoWorkTaskTimeLimit = 300
-			
-			if(ASuperSurvivor:getGroupRole() == "Doctor") then
-			
-				local medicalarea = HisGroup:getGroupArea("MedicalStorageArea")
-				
-				local gotoSquare
-				if(medicalarea) and (medicalarea[1] ~= 0) then gotoSquare = getCenterSquareFromArea(medicalarea[1],medicalarea[2],medicalarea[3],medicalarea[4],medicalarea[5]) end
-				if(not gotoSquare) then gotoSquare = CenterBaseSquare end
-				
-				if(gotoSquare ) then ASuperSurvivor:walkTo(gotoSquare) end
-				TaskMangerIn:AddToTop(DoctorTask:new(ASuperSurvivor))
-				return TaskMangerIn
-			
-			elseif(ASuperSurvivor:getGroupRole() == "Worker") then
-				print("yes im a worker")
-				if(SurvivorsFindWorkThemselves) and (RainManager.isRaining() == false) then
-				print("yes i should look for work")
-					if(SafeToGoOutAndWork) then
-						TaskMangerIn:setTaskUpdateLimit(AutoWorkTaskTimeLimit)
-						local randresult = ZombRand(5) + 1
-						print("random job result is:"..tostring(randresult))
-						if(randresult == 1) then
-							ASuperSurvivor:Speak(getText("ContextMenu_SD_IGoRelax"))
-							TaskMangerIn:AddToTop(WanderInBaseTask:new(ASuperSurvivor))
-						elseif(randresult == 2) then
-							ASuperSurvivor:Speak(getText("ContextMenu_SD_IGoGetWood"))
-							local dropSquare = CenterBaseSquare
-							local woodstoragearea = HisGroup:getGroupArea("WoodStorageArea")
-							if(woodstoragearea[1] ~= 0) then dropSquare = getCenterSquareFromArea(woodstoragearea[1],woodstoragearea[2],woodstoragearea[3],woodstoragearea[4],woodstoragearea[5]) end
-							TaskMangerIn:AddToTop(GatherWoodTask:new(ASuperSurvivor,dropSquare)) 
-							TaskMangerIn:setTaskUpdateLimit(AutoWorkTaskTimeLimit)
-						elseif(randresult == 3) then
-							ASuperSurvivor:Speak(getText("ContextMenu_SD_IGoPileCorpse"))
-							local baseBounds = HisGroup:getBounds()
-							local dropSquare = getCell():getOrCreateGridSquare(baseBounds[1]-5,baseBounds[3]-5,0)
-							local storagearea = HisGroup:getGroupArea("CorpseStorageArea")
-							if(storagearea[1] ~= 0) then dropSquare = getCenterSquareFromArea(storagearea[1],storagearea[2],storagearea[3],storagearea[4],storagearea[5]) end
-							if(dropSquare) then
-								TaskMangerIn:AddToTop(PileCorpsesTask:new(ASuperSurvivor,dropSquare)) 
-								TaskMangerIn:setTaskUpdateLimit(AutoWorkTaskTimeLimit)
-							end
-						elseif(randresult == 4) then
-							
-							local dropSquare = CenterBaseSquare
-							local FoodStorageCenter = HisGroup:getGroupAreaCenterSquare("FoodStorageArea")
-							if(FoodStorageCenter) then dropSquare = FoodStorageCenter end
-							
-							local forage = HisGroup:getGroupAreaCenterSquare("ForageArea")
-							if(forage ~= nil) then 				
-								ASuperSurvivor:Speak(getText("ContextMenu_SD_IGoForage"))
-								TaskMangerIn:AddToTop(CleanInvTask:new(ASuperSurvivor,dropSquare)) 
-								TaskMangerIn:AddToTop(ForageTask:new(ASuperSurvivor)) 
-								TaskMangerIn:setTaskUpdateLimit(AutoWorkTaskTimeLimit)
-								ASuperSurvivor:walkTo(forage)
-							else
-								print("forage was nil")
-							end
-							
-						elseif(randresult == 5) then
-							
-							local area = HisGroup:getGroupAreaCenterSquare("ChopTreeArea")
-							if(area) then 		
-								ASuperSurvivor:Speak(getText("ContextMenu_SD_IGoChopWood"))
-								TaskMangerIn:AddToTop(ChopWoodTask:new(ASuperSurvivor)) 					
-								TaskMangerIn:setTaskUpdateLimit(AutoWorkTaskTimeLimit)					
-							else
-								print("area was nil")
-							end
-							
-						end
-					else
-						TaskMangerIn:AddToTop(WanderInBaseTask:new(ASuperSurvivor))
-					end -- safeto go out end
-				end -- allowed to go out work end
-				
-			
-			elseif(ASuperSurvivor:getGroupRole() == "Guard") then
-				
-				local randresult = 2 --ZombRand(2) + 1
-				print("random job result is:"..tostring(randresult))
-				if(randresult == 1) then
-				
-					ASuperSurvivor:Speak(getText("ContextMenu_SD_IGoRelax"))
-					TaskMangerIn:AddToTop(WanderInBaseTask:new(ASuperSurvivor))
-					
-				elseif(randresult == 2) then
-				
-					local area = HisGroup:getGroupArea("GuardArea")
-					if(area) then 		
-						ASuperSurvivor:Speak(getText("ContextMenu_SD_IGoGuard"))
-						TaskMangerIn:AddToTop(WanderInAreaTask:new(ASuperSurvivor,area)) 					
-						TaskMangerIn:setTaskUpdateLimit(AutoWorkTaskTimeLimit)					
-					else
-						print("area was nil")
-					end
-				end
-				
-			elseif(ASuperSurvivor:getGroupRole() == "Farmer") then
-				
-				local randresult = 2 --ZombRand(2) + 1
-				print("random job result is:"..tostring(randresult))
-				if(randresult == 1) then
-				
-					ASuperSurvivor:Speak(getText("ContextMenu_SD_IGoRelax"))
-					TaskMangerIn:AddToTop(WanderInBaseTask:new(ASuperSurvivor))
-					TaskMangerIn:setTaskUpdateLimit(AutoWorkTaskTimeLimit)
-					
-				elseif(randresult == 2) then
-				
-					local area = HisGroup:getGroupArea("FarmingArea")
-					if(area) then 		
-						ASuperSurvivor:Speak(getText("ContextMenu_SD_IGoFarm"))
-						TaskMangerIn:AddToTop(FarmingTask:new(ASuperSurvivor)) 					
-						TaskMangerIn:setTaskUpdateLimit(AutoWorkTaskTimeLimit)					
-					else
-						print("area was nil")
-					end
-				end
-				
-			end
-	end
-	if (ASuperSurvivor:getCurrentTask() == "None") and (IsInBase == false) and (not IsInAction) and (HisGroup~=nil) then
-		local baseSq = CenterBaseSquare
-		if(baseSq ~= nil) then 
-			ASuperSurvivor:Speak(getText("ContextMenu_SD_IGoBackBase"))
-			TaskMangerIn:AddToTop(ReturnToBaseTask:new(ASuperSurvivor)) 
+	if(not getSpecificPlayer(0):isAsleep()) then
+		SafeToGoOutAndWork = true
+		
+		if(RainManager.isRaining()) and (ASuperSurvivor:Get():isOutside()) and (TaskMangerIn.TaskUpdateLimit ~= 0) and (TaskMangerIn:getCurrentTask() ~= "Enter New Building") and (TaskMangerIn:getCurrentTask() ~= "Find Building") then
+			ASuperSurvivor:Speak(getText("ContextMenu_SD_RainingGoInside"))
+			TaskMangerIn:clear()
+			TaskMangerIn:AddToTop(AttemptEntryIntoBuildingTask:new(ASuperSurvivor,nil))
+			TaskMangerIn:AddToTop(FindBuildingTask:new(ASuperSurvivor))
 		end
-	end
-	
+		
+		if (ASuperSurvivor:getCurrentTask() == "None") and (IsInBase) and (not IsInAction) and (ZombRand(4)==0) then
+				local AutoWorkTaskTimeLimit = 300
+				
+				if(ASuperSurvivor:getGroupRole() == "Doctor") then
+				
+					local medicalarea = HisGroup:getGroupArea("MedicalStorageArea")
+					
+					local gotoSquare
+					if(medicalarea) and (medicalarea[1] ~= 0) then gotoSquare = getCenterSquareFromArea(medicalarea[1],medicalarea[2],medicalarea[3],medicalarea[4],medicalarea[5]) end
+					if(not gotoSquare) then gotoSquare = CenterBaseSquare end
+					
+					if(gotoSquare ) then ASuperSurvivor:walkTo(gotoSquare) end
+					TaskMangerIn:AddToTop(DoctorTask:new(ASuperSurvivor))
+					return TaskMangerIn
+				
+				elseif(ASuperSurvivor:getGroupRole() == "Worker") then
+					print("yes im a worker:"..tostring(SurvivorsFindWorkThemselves))
+					if(SurvivorsFindWorkThemselves) and (RainManager.isRaining() == false) then
+					print("yes i should look for work")
+						if(SafeToGoOutAndWork) then
+							TaskMangerIn:setTaskUpdateLimit(AutoWorkTaskTimeLimit)
+							local randresult = ZombRand(5) + 1
+							print("random job result is:"..tostring(randresult))
+							if(randresult == 1) then
+								ASuperSurvivor:Speak(getText("ContextMenu_SD_IGoRelax"))
+								TaskMangerIn:AddToTop(WanderInBaseTask:new(ASuperSurvivor))
+							elseif(randresult == 2) then
+								ASuperSurvivor:Speak(getText("ContextMenu_SD_IGoGetWood"))
+								local dropSquare = CenterBaseSquare
+								local woodstoragearea = HisGroup:getGroupArea("WoodStorageArea")
+								if(woodstoragearea[1] ~= 0) then dropSquare = getCenterSquareFromArea(woodstoragearea[1],woodstoragearea[2],woodstoragearea[3],woodstoragearea[4],woodstoragearea[5]) end
+								TaskMangerIn:AddToTop(GatherWoodTask:new(ASuperSurvivor,dropSquare)) 
+								TaskMangerIn:setTaskUpdateLimit(AutoWorkTaskTimeLimit)
+							elseif(randresult == 3) then
+								ASuperSurvivor:Speak(getText("ContextMenu_SD_IGoPileCorpse"))
+								local baseBounds = HisGroup:getBounds()
+								local dropSquare = getCell():getOrCreateGridSquare(baseBounds[1]-5,baseBounds[3]-5,0)
+								local storagearea = HisGroup:getGroupArea("CorpseStorageArea")
+								if(storagearea[1] ~= 0) then dropSquare = getCenterSquareFromArea(storagearea[1],storagearea[2],storagearea[3],storagearea[4],storagearea[5]) end
+								if(dropSquare) then
+									TaskMangerIn:AddToTop(PileCorpsesTask:new(ASuperSurvivor,dropSquare)) 
+									TaskMangerIn:setTaskUpdateLimit(AutoWorkTaskTimeLimit)
+								end
+							elseif(randresult == 4) then
+								
+								local dropSquare = CenterBaseSquare
+								local FoodStorageCenter = HisGroup:getGroupAreaCenterSquare("FoodStorageArea")
+								if(FoodStorageCenter) then dropSquare = FoodStorageCenter end
+								
+								local forage = HisGroup:getGroupAreaCenterSquare("ForageArea")
+								if(forage ~= nil) then 				
+									ASuperSurvivor:Speak(getText("ContextMenu_SD_IGoForage"))
+									TaskMangerIn:AddToTop(CleanInvTask:new(ASuperSurvivor,dropSquare)) 
+									TaskMangerIn:AddToTop(ForageTask:new(ASuperSurvivor)) 
+									TaskMangerIn:setTaskUpdateLimit(AutoWorkTaskTimeLimit)
+									ASuperSurvivor:walkTo(forage)
+								else
+									print("forage was nil")
+								end
+								
+							elseif(randresult == 5) then
+								
+								local area = HisGroup:getGroupAreaCenterSquare("ChopTreeArea")
+								if(area) then 		
+									ASuperSurvivor:Speak(getText("ContextMenu_SD_IGoChopWood"))
+									TaskMangerIn:AddToTop(ChopWoodTask:new(ASuperSurvivor)) 					
+									TaskMangerIn:setTaskUpdateLimit(AutoWorkTaskTimeLimit)					
+								else
+									print("area was nil")
+								end
+								
+							end
+						else
+							TaskMangerIn:AddToTop(WanderInBaseTask:new(ASuperSurvivor))
+						end -- safeto go out end
+					end -- allowed to go out work end
+					
+				
+				elseif(ASuperSurvivor:getGroupRole() == "Guard") then
+					
+					local randresult = 2 --ZombRand(2) + 1
+					print("random job result is:"..tostring(randresult))
+					if(randresult == 1) then
+					
+						ASuperSurvivor:Speak(getText("ContextMenu_SD_IGoRelax"))
+						TaskMangerIn:AddToTop(WanderInBaseTask:new(ASuperSurvivor))
+						
+					elseif(randresult == 2) then
+					
+						local area = HisGroup:getGroupArea("GuardArea")
+						if(area) then 		
+							ASuperSurvivor:Speak(getText("ContextMenu_SD_IGoGuard"))
+							TaskMangerIn:AddToTop(WanderInAreaTask:new(ASuperSurvivor,area)) 					
+							TaskMangerIn:setTaskUpdateLimit(AutoWorkTaskTimeLimit)					
+						else
+							print("area was nil")
+						end
+					end
+					
+				elseif(ASuperSurvivor:getGroupRole() == "Farmer") then
+					
+					local randresult = 2 --ZombRand(2) + 1
+					print("random job result is:"..tostring(randresult))
+					if(randresult == 1) then
+					
+						ASuperSurvivor:Speak(getText("ContextMenu_SD_IGoRelax"))
+						TaskMangerIn:AddToTop(WanderInBaseTask:new(ASuperSurvivor))
+						TaskMangerIn:setTaskUpdateLimit(AutoWorkTaskTimeLimit)
+						
+					elseif(randresult == 2) then
+					
+						local area = HisGroup:getGroupArea("FarmingArea")
+						if(area) then 		
+							ASuperSurvivor:Speak(getText("ContextMenu_SD_IGoFarm"))
+							TaskMangerIn:AddToTop(FarmingTask:new(ASuperSurvivor)) 					
+							TaskMangerIn:setTaskUpdateLimit(AutoWorkTaskTimeLimit)					
+						else
+							print("area was nil")
+						end
+					end
+					
+				end
+		end
+		if (ASuperSurvivor:getCurrentTask() == "None") and (IsInBase == false) and (not IsInAction) and (HisGroup~=nil) then
+			local baseSq = CenterBaseSquare
+			if(baseSq ~= nil) then 
+				ASuperSurvivor:Speak(getText("ContextMenu_SD_IGoBackBase"))
+				TaskMangerIn:AddToTop(ReturnToBaseTask:new(ASuperSurvivor)) 
+			end
+		end
+	end	
 	-------------If in base tasks --END--------------------------------------
 	
 	

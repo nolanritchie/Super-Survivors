@@ -388,9 +388,10 @@ function supersurvivortemp(keyNum)
 		
 		elseif( keyNum == 46) then -- c key
 		elseif( keyNum == 199) then -- home key
-			if (getSpecificPlayer(0)) then
-				local GroupId = SSGM:GetGroupIdFromSquare(getSpecificPlayer(0):getCurrentSquare())
-				getSpecificPlayer(0):Say(tostring(GroupId))
+			if(getSpecificPlayer(0) ~= nil) and (getSpecificPlayer(0):getVehicle() ~= nil) then
+				getSpecificPlayer(0):Say("this vehicle set to remote control vehicle")
+				LastVehicle = getSpecificPlayer(0):getVehicle()
+				VehicleController = LastVehicle:getController()
 			end
 		elseif( keyNum == 200) then -- up key
 			if(VehicleController ~= nil) then
