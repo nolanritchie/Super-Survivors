@@ -13,7 +13,7 @@ function SurvivorOrder(test,player,order,orderParam)
 		
 		ASuperSurvivor:setWalkingPermitted(true)
 		if(order == "Loot Room") and (orderParam ~= nil) then TaskMangerIn:AddToTop(LootCategoryTask:new(ASuperSurvivor,ASuperSurvivor:getBuilding(),orderParam,0)) 
-		elseif(order == "Follow") then
+		elseif(order == "Follow") and (TaskMangerIn:getCurrentTask() ~= "Follow") then
 			TaskMangerIn:clear()
 			TaskMangerIn:AddToTop(FollowTask:new(ASuperSurvivor,getSpecificPlayer(0))) 
 		elseif(order == "Pile Corpses") then 

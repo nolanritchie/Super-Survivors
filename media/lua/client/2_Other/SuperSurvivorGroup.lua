@@ -56,7 +56,7 @@ function SuperSurvivorGroup:getGroupAreaContainer(thisArea)
 	
 		for x=area[1],area[2] do
 			for y=area[3],area[4] do
-				local sq = getCell():getGridSquare(x,y,thisArea[5])
+				local sq = getCell():getGridSquare(x,y,area[5])
 				if(sq) then
 					local objs = sq:getObjects()
 					for j=0, objs:size()-1 do
@@ -292,6 +292,14 @@ end
 
 function SuperSurvivorGroup:addMember(newSurvivor, Role)
 	
+	local currentGroup = newSurvivor:getGroup()
+	if(currentGroup) then
+		currentGroup:removeMember(newSurvivor:getID())
+		print("removed from current group")
+	else
+		print("no current group")
+	end
+	
 	--if(newSurvivor:getGroupID() == self.ID) then return false end
 	if(Role == nil) then Role = "Worker" end
 	if(newSurvivor ~= nil) and (not has_value(self.Members,newSurvivor:getID())) then 	
@@ -326,10 +334,12 @@ function SuperSurvivorGroup:removeMember(ID)
 	
 	if(has_value(self.Members,ID)) then
 		
-		local index
-		for i=1,#self.Members do
-			if(ID == self.Members[i]) then table.remove(self.Members,i) end
-		end
+		--local index
+		--for i=1,#self.Members do
+		--	if(ID == self.Members[i]) then 
+				table.remove(self.Members,ID) 
+		--	end
+		--end
 		
 	end
 	
@@ -340,14 +350,19 @@ function SuperSurvivorGroup:stealingDetected(thief)
 	print("inside stealing detected!")
 	for i=1,#self.Members do	
 		local workingID = self.Members[i]
-		if(workingID ~= nil) and (thief ~= nil) and (thief:getModData().ID ~= nil) and (self:getWarnPlayer(thief:getModData().ID)) and SSM:Get(workingID) ~= nil and SSM:Get(workingID):Get():CanSee(thief) then
-			SSM:Get(workingID):Speak(getText("ContextMenu_SD_IAttackFoodThief"))
-			thief:getModData().semiHostile = true
-			SSM:Get(workingID):Get():getModData().hitByCharacter = true
-		elseif(workingID ~= nil) and (thief ~= nil) and (thief:getModData().ID ~= nil) and (not self:getWarnPlayer(thief:getModData().ID)) and SSM:Get(workingID) ~= nil and SSM:Get(workingID):Get():CanSee(thief) then		
-			SSM:Get(workingID):Speak(getText("ContextMenu_SD_IWarnFoodTheif"))
-			self:WarnPlayer(thief:getModData().ID)
-		end		
+		local workingSS = SSM:Get(workingID)
+		if (workingID ~= nil) and (thief ~= nil) and (thief:getModData().ID ~= nil) and (workingSS ~= nil) and (workingSS:getGroupID() == self.ID) then
+			
+			if (self:getWarnPlayer(thief:getModData().ID)) and SSM:Get(workingID):Get():CanSee(thief) then
+				SSM:Get(workingID):Speak(getText("ContextMenu_SD_IAttackFoodThief"))
+				thief:getModData().semiHostile = true
+				SSM:Get(workingID):Get():getModData().hitByCharacter = true
+			elseif (not self:getWarnPlayer(thief:getModData().ID)) and SSM:Get(workingID):Get():CanSee(thief) then		
+				SSM:Get(workingID):Speak(getText("ContextMenu_SD_IWarnFoodThief"))
+				self:WarnPlayer(thief:getModData().ID)
+			end	
+			
+		end
 	end
 	
 end

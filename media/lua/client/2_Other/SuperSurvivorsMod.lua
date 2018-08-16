@@ -354,11 +354,9 @@ function SuperSurvivorsHotKeyOrder(index)
 
 	local order, isListening
 			if(index <= #Orders) then
-				print("index was less than or = to #orders")
 				order = Orders[index]
 				isListening = false
 			else --single
-				print("index was greter than or = to #orders")
 				order = Orders[(index - #Orders)]
 				isListening = true
 			end
@@ -384,18 +382,16 @@ function supersurvivortemp(keyNum)
 			--SuperSurvivorsRaiderManager()
 		
 			local ss = SuperSurvivorRandomSpawn(getSpecificPlayer(0):getCurrentSquare())
-			for i=1, 4 do ss:Get():LevelPerk(Perks.FromString("Farming")) end
+			--for i=1, 4 do ss:Get():LevelPerk(Perks.FromString("Farming")) end
 			--ss:setAIMode("FollowRoute")
 			--ss:getTaskManager():AddToTop(FollowRouteTask:new(ss,"WPToHilltop"))
 		
 		elseif( keyNum == 46) then -- c key
 		elseif( keyNum == 199) then -- home key
-			if(getSpecificPlayer(0) and getSpecificPlayer(0):getVehicle() ~= nil) then
-				--local vehicle = getSpecificPlayer(0):getVehicle()
-				--if(instanceof(vehicle,"BaseVehicle")) then
-				--	VehicleController = CarController.new(vehicle)
-				--	getSpecificPlayer(0):Say("remote control vehicle set")
-				--end
+			if(getSpecificPlayer(0) ~= nil) and (getSpecificPlayer(0):getVehicle() ~= nil) then
+				getSpecificPlayer(0):Say("this vehicle set to remote control vehicle")
+				LastVehicle = getSpecificPlayer(0):getVehicle()
+				VehicleController = LastVehicle:getController()
 			end
 		elseif( keyNum == 200) then -- up key
 			if(VehicleController ~= nil) then
@@ -547,7 +543,7 @@ function supersurvivortemp(keyNum)
 		elseif( keyNum == getCore():getKey("SSHotkey_4")) then -- esc key
 			local index = SuperSurvivorGetOption("SSHotkey4")
 			SuperSurvivorsHotKeyOrder(index)
-		elseif( keyNum == 49) then 
+		elseif( keyNum == 0) then 
 			if(getSpecificPlayer(0):isForceOverrideAnim()) then
 				getSpecificPlayer(0):setForceOverrideAnim(false)
 				getSpecificPlayer(0):getModData().ForceAnim = nil
@@ -632,10 +628,10 @@ function SuperSurvivorsRaiderManager()
 	local RaiderResult = (ZombRand(chance) == 0)
 	local RaiderAtLeastTimedExceeded = ((hours - LastRaidTime) >= RaidsAtLeastEveryThisManyHours)
 	
-	print("Last raid time is: "..tostring(LastRaidTime)..". Current time is:"..tostring(hours))
-	print("Raiders start time is passed?: "..tostring(RaidersStartTimePassed))
-	print("chance for raiders is 1 in "..tostring(chance).." result is "..tostring(RaiderResult))
-	print("At least this many days (".. tostring(RaidsAtLeastEveryThisManyHours) ..") time exceeded: "..tostring(RaiderAtLeastTimedExceeded))
+	--print("Last raid time is: "..tostring(LastRaidTime)..". Current time is:"..tostring(hours))
+	--print("Raiders start time is passed?: "..tostring(RaidersStartTimePassed))
+	--print("chance for raiders is 1 in "..tostring(chance).." result is "..tostring(RaiderResult))
+	--print("At least this many days (".. tostring(RaidsAtLeastEveryThisManyHours) ..") time exceeded: "..tostring(RaiderAtLeastTimedExceeded))
 	
 	if RaidersStartTimePassed and ( RaiderResult or RaiderAtLeastTimedExceeded ) then
 		

@@ -66,6 +66,7 @@ function PileCorpsesTask:update()
 				local maxx=math.floor(player:getX() + range);
 				local miny=math.floor(player:getY() - range);
 				local maxy=math.floor(player:getY() + range);
+				local z = 0
 				
 				if(self.group ~= nil) then				
 					local area = self.group:getGroupArea("TakeCorpseArea")
@@ -74,6 +75,7 @@ function PileCorpsesTask:update()
 						maxx=area[2]
 						miny=area[3]
 						maxy=area[4]
+						z = area[5]
 					end
 				end
 				
@@ -81,7 +83,7 @@ function PileCorpsesTask:update()
 				local gamehours = getGameTime():getWorldAgeHours();
 				for x=minx, maxx do
 					for y=miny, maxy do
-						Square = getCell():getGridSquare(x,y,0);
+						Square = getCell():getGridSquare(x,y,z);
 						local distance = getDistanceBetween(Square,player);
 						if(Square ~= nil) and (distance < closestsoFar) and (getDistanceBetween(self.BringHereSquare,Square)>2) and (Square:getDeadBody()) then
 							

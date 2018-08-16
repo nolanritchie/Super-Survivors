@@ -1,4 +1,7 @@
 ContextMenu_EN = {
+
+	ContextMenu_SD_IAttackFoodThief = "That's it! Get out of here!",
+	ContextMenu_SD_IWarnFoodThief = "Hey you! stop stealing our food or else!!",
 	
 	ContextMenu_SD_OrderAll = "Order All ",
 	ContextMenu_SShotkey1 = "Hotkey 1 Action",
@@ -245,8 +248,7 @@ ContextMenu_EN = {
 	ContextMenu_SD_BandageBP_Before = "Bandaging ",
 	ContextMenu_SD_BandageBP_After = "",
 	
-	ContextMenu_SD_IAttackFoodTheif = "That's it! Get out of here!",
-	ContextMenu_SD_IWarnFoodTheif = "Hey you! stop stealing our food or else!!",
+
 	ContextMenu_SD_Resting = "Resting...",
 	ContextMenu_SD_NoAxeNoChopWood = "no axe anywhere, giving up chopping wood",
 	ContextMenu_SD_NoTrees = "No Trees around here",

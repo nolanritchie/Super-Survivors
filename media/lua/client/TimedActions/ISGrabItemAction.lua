@@ -21,7 +21,6 @@ end
 function ISGrabItemAction:start()
 	self.item:getItem():setJobType(getText("ContextMenu_Grab"));
 	self.item:getItem():setJobDelta(0.0);
-	
 end
 
 function ISGrabItemAction:stop()
@@ -31,14 +30,21 @@ function ISGrabItemAction:stop()
 end
 
 function ISGrabItemAction:perform()
-
-	if(self.item ~= nil) and (self.item:getWorldItem() ~= nil) and (self.item:getWorldItem():getSquare()~= nil) then
-		if(self.item:getWorldItem():getSquare():getModData().GroupID ~= nil) and (self.item:getWorldItem():getSquare():getModData().GroupID ~= self.character:getModData().GroupID) then
-			print("stealing detected!")
-			SSGM:Get(self.item:getWorldItem():getSquare():getModData().GroupID):stealingDetected(self.character)
-		end
-	end
+	print("check steral")
+	
+	if(self.item ~= nil) then
 		
+		local ssquare = getSourceSquareOfItem(self.item,self.character)
+		if(ssquare ~= nil) then			
+			local OwnerGroupId = SSGM:GetGroupIdFromSquare(ssquare)
+			local TakerGroupId = self.character:getModData().Group
+			if(OwnerGroupId ~= -1) and (TakerGroupId ~= OwnerGroupId) then
+				print("ga stealing detected!")
+				SSGM:Get(OwnerGroupId):stealingDetected(self.character)
+			end
+		end	
+	end
+	
     local inventoryItem = self.item:getItem()
     self.item:getSquare():transmitRemoveItemFromSquare(self.item);
     self.item:removeFromWorld()
@@ -54,9 +60,12 @@ function ISGrabItemAction:perform()
         pdata.playerInventory:refreshBackpacks();
         pdata.lootInventory:refreshBackpacks();
     end
+	
 
     -- needed to remove from queue / start next.
 	ISBaseTimedAction.perform(self);
+	
+	
 end
 
 function ISGrabItemAction:new (character, item, time)

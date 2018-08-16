@@ -1,15 +1,22 @@
 ContextMenu_JP = {
 	
-	ContextMenu_speech_Sick1 = "I'm feeling sick",
-    ContextMenu_speech_Sick2 = "kind of feeling sick",
+	ContextMenu_SD_OrderAll = "総員に告ぐ ",
+	ContextMenu_SShotkey1 = "ホットキー1",
+	ContextMenu_SShotkey2 = "ホットキー2",
+	ContextMenu_SShotkey3 = "ホットキー3",
+	ContextMenu_SShotkey4 = "ホットキー4",
+	ContextMenu_SShotkeyDesc = "このホットキーを押した時に実行される動作を選びます。<br>プレイヤーの話を聞いている人にのみ効果があります。(ホットキー(t)で使用)<br>また"総員に告ぐ"コマンドは範囲内の全メンバーに効果があります。",
 	
-	ContextMenu_speech_VSick1 = "I'm feeling Quite sick",
-    ContextMenu_speech_VSick2 = "kind of feeling pretty sick",
+	ContextMenu_speech_NoForagingHere = "ここには何もないな。",
 	
-	ContextMenu_speech_SSick1 = "I'm gonna puke",
-    ContextMenu_speech_SSick2 = "feel like im gonna barf",
+	ContextMenu_speech_Sick1 = "調子が悪いな...",
+    ContextMenu_speech_Sick2 = "何だか調子が悪いな...",
 	
-	ContextMenu_speech_NoForagingHere = "こんなところに何も見つかりそうにもない。",
+	ContextMenu_speech_VSick1 = "体調が優れないな...",
+    ContextMenu_speech_VSick2 = "何だか体調が優れないな...",
+	
+	ContextMenu_speech_SSick1 = "凄い吐き気がするよ...",
+    ContextMenu_speech_SSick2 = "何だか凄い吐き気がするよ...",
 	
 	ContextMenu_SD_PerkLeveledUp_After = "のレベルが上がりました！",
 	ContextMenu_SD_PerkLeveledUp_Before = "",
@@ -20,7 +27,6 @@ ContextMenu_JP = {
 	ContextMenu_speech_NoFarmingArea = "耕作/収穫エリアがないので作業に取り掛かれない。",
     ContextMenu_speech_IDontKnowHowFarming = "耕作を行おうにもその知識がないんだ。",	
 	ContextMenu_SOption_SurvivorBravery = "生存者の勇敢度",
-
 	ContextMenu_SOption_SurvivorBraveryDesc = "生存者が逃げたり避けたりするよりも、敢えて敵と戦う道を取るかどうかを設定します。",
 	ContextMenu_SD_Cowardly = "臆病",
 	ContextMenu_SD_Brave = "勇敢",
@@ -33,31 +39,32 @@ ContextMenu_JP = {
 	ContextMenu_OutOfAmmo3 = "ちっ、撃ち尽くしたか。",
 	ContextMenu_OutOfAmmo4 = "くっ、弾が無くなったか！",
 
-	ContextMenu_OrderDesc_Farming = "生存者は農業従事者になります。耕作/収穫エリアに指定された場所で作物を育てます。収穫物は食料貯蔵エリアに運ばれます。",	
+	ContextMenu_OrderDesc_Farming = "生存者は農業従事者になります。<br>耕作/収穫エリアに指定された場所で作物を育てます。<br>収穫物は食料貯蔵エリアに運ばれます。<br>この作業を指示するには生存者の耕作スキルがレベル3以上必要です。",	
 	ContextMenu_OrderDesc_Barricade = "生存者はプレイヤーがいる建物の内側から窓にバリケードを貼ります。",
 	ContextMenu_OrderDesc_Chop_Wood = "生存者が斧を装備している場合のみ、その地域の木を伐採します。",
 	ContextMenu_OrderDesc_Explore = "生存者は周辺地域を移動し、遭遇した敵に攻撃を行います。",
-	ContextMenu_OrderDesc_Follow = "生存者とプレイヤーの距離が一定以上離れた場合はプレイヤーに追従し、追従する必要がない場合のみ敵に攻撃を行います。",
+	ContextMenu_OrderDesc_Follow = "生存者とプレイヤーの距離が一定以上離れた場合はプレイヤーに追従します。<br>追従する必要がない場合のみ敵に攻撃を行います。",
 	ContextMenu_OrderDesc_Forage = "生存者は周辺地域で採取を行います。その後に採取した材料を全て落とします。",
 	ContextMenu_OrderDesc_Guard = "生存者は遭遇した敵を攻撃した後、防衛地点に戻る様になります。",
 	ContextMenu_OrderDesc_Patrol = "生存者が作業を指示された時の現在地からプレイヤーの位置までを交互に巡回します。",
-	ContextMenu_OrderDesc_Stand_Ground = "生存者はプレイヤーが立っている位置に移動した後、そこから動きません。敵が視界内に入っても移動せず、その場で攻撃を行います。",
+	ContextMenu_OrderDesc_Stand_Ground = "生存者はプレイヤーが立っている位置に移動した後はその場から動きません。<br>敵が視界内に入っても移動せず、その場で攻撃を行います。",
 	ContextMenu_OrderDesc_Loot_Room = "現在いる建物内のアイテムを漁ります。",
 	ContextMenu_OrderDesc_Lock_Doors = "現在いる建物内のドアを施錠します。",
 	ContextMenu_OrderDesc_Unlock_Doors = "現在いる建物内のドアを解錠します。",
-	ContextMenu_OrderDesc_Doctor = "生存者は怪我をしている人に治療を施します。この作業を指示するには生存者の応急医療スキルがレベル3以上必要です。",
+	ContextMenu_OrderDesc_Doctor = "生存者は怪我をしている人に治療を施します。<br>この作業を指示するには生存者の応急医療スキルがレベル3以上必要です。",
 	ContextMenu_OrderDesc_Go_Find_Food = "生存者が食料を見つけられる場所にいるならば、近くから食料を探して食べます。",
 	ContextMenu_OrderDesc_Go_Find_Weapon = "生存者が武器を見つけられる場所にいるならば、近くから武器を探して手に入れます。",
 	ContextMenu_OrderDesc_Go_Find_Water = "生存者が水を見つけられる場所にいるならば、近くから水を探して飲みます。",
-	ContextMenu_OrderDesc_Clean_Up_Inventory = "生存者はプレイヤーの位置までやって来て、自分のインベントリから鞄や袋などを取り除きます。その後、採取した材料や空のボトル、余分な武器など必要のない持ち物を袋に仕舞います。",
-	ContextMenu_OrderDesc_Hold_Still = "生存者は殆ど動かなくなります。医者の治療行為を妨げずに治療を受けさせたい時に指示すると良いでしょう。",
+	ContextMenu_OrderDesc_Clean_Up_Inventory = "生存者はプレイヤーの位置までやって来て、自分のインベントリから鞄や袋などを取り除きます。<br>その後、採取した材料や空のボトル、余分な武器など必要のない持ち物を袋に仕舞います。",
+	ContextMenu_OrderDesc_Hold_Still = "生存者は殆ど動かなくなります。<br>医者の治療行為を妨げずに治療を受けさせたい時に指示すると良いでしょう。",
 	ContextMenu_OrderDesc_Gather_Wood = "生存者は周囲にある全ての丸太や板を集めて、プレイヤーの現在地まで持ち帰ります。",
 	ContextMenu_OrderDesc_Dismiss = "生存者をグループから追い出します。",
-	ContextMenu_OrderDesc_Relax = "生存者がその場所を気に入っているならば、その周辺をぶらつきます。",
+	ContextMenu_OrderDesc_Relax = "生存者がその場所を気に入っている場合は、その周辺をぶらつきます。",
 	ContextMenu_OrderDesc_Pile_Corpses = "生存者が周辺の死体を全て集めて、プレイヤーの現在地に置きます。",
 	ContextMenu_OrderDesc_Return_To_Base = "生存者を拠点に戻します。",
 	ContextMenu_OrderDesc_Stop = "生存者が今やっている作業を止めさせます。",
 
+	
 	ContextMenu_OrderDisplayName_Farming = "耕作しろ",
 	ContextMenu_OrderDisplayName_Barricade = "バリケードを貼れ",
 	ContextMenu_OrderDisplayName_Chop_Wood = "木を切れ",
@@ -104,8 +111,8 @@ ContextMenu_JP = {
 	ContextMenu_SD_SurvivorID = "生存者ID",
 	ContextMenu_SD_GroupID = "グループID",
 	ContextMenu_SD_GroupRole = "グループルール",
-	ContextMenu_SD_YourGroupMembers = "Your Super Survivor Group Members",
-	ContextMenu_SD_MIASurvivor = "MIA Survivor",
+	ContextMenu_SD_YourGroupMembers = "グループメンバー",
+	ContextMenu_SD_MIASurvivor = "行方不明者",
 	ContextMenu_SD_BaseLocation = "拠点の位置",
 	
 	
@@ -174,7 +181,7 @@ ContextMenu_JP = {
 	ContextMenu_SD_VeryMean	= "かなり狭量",
 	
 	ContextMenu_SD_SurvivorInfoName_Before = "生存者 ",
-	ContextMenu_SD_SurvivorInfoName_After = "' の情報: ",
+	ContextMenu_SD_SurvivorInfoName_After = " の情報: ",
 	ContextMenu_SD_EatFood_Before = "",
 	ContextMenu_SD_EatFood_After = "を食べました。",
 	ContextMenu_SD_CallName_Before = "",
@@ -216,7 +223,7 @@ ContextMenu_JP = {
 	ContextMenu_SD_DoctorPrefix_Before = "",
 	ContextMenu_SD_DoctorPrefix_After = "(医者)",
 	ContextMenu_SD_VeteranPrefix_Before = "",
-	ContextMenu_SD_VeteranPrefix_After = "(老練者)",
+	ContextMenu_SD_VeteranPrefix_After = "(退役軍人)",
 	ContextMenu_SD_FarmerPrefix_Before = "",
 	ContextMenu_SD_FarmerPrefix_After = "(農業従事者)",
 	
@@ -229,20 +236,20 @@ ContextMenu_JP = {
 	ContextMenu_SD_IGoFarm = "耕作をするつもりだ。",
 	ContextMenu_SD_IGoGuard = "防衛するつもりだ。",
 	ContextMenu_SD_IGoBackBase = "拠点に戻るつもりだ。",
-	ContextMenu_SD_NoWoodHere = "ここには木材がない。",
+	ContextMenu_SD_NoWoodHere = "ここには木材がないよ。",
 	
 	ContextMenu_SD_TakesItemFromGround_Before = "地面から",
 	ContextMenu_SD_TakesItemFromGround_After = "を取りました。",
 	ContextMenu_SD_ComeWithMe_Before = "",
 	ContextMenu_SD_ComeWithMe_After = "、一緒に来てくれ！",	
 	ContextMenu_SD_BandageBP_Before = "",
-	ContextMenu_SD_BandageBP_After = "は包帯を巻きました。",
+	ContextMenu_SD_BandageBP_After = "に包帯を巻きました。",
 	
 	ContextMenu_SD_IAttackFoodTheif = "それでおしまいだ！ここから出ていけ！",
 	ContextMenu_SD_IWarnFoodTheif = "おい！食料を盗むのは止めてくれ！！",
 	ContextMenu_SD_Resting = "休憩中...",
 	ContextMenu_SD_NoAxeNoChopWood = "斧を持っていないので木を切れない",
-	ContextMenu_SD_NoTrees = "ここには木がない",
+	ContextMenu_SD_NoTrees = "ここには木がないよ。",
 	
 	ContextMenu_SD_RIPSurvivor = "友よ、安らかに眠れ。",
 	ContextMenu_SD_DoctorDone = "元気になったな！もう無理するなよ！",
@@ -301,7 +308,7 @@ ContextMenu_JP = {
 	ContextMenu_SD_SetAreaClear = "消去",
 	ContextMenu_SD_SetAreaSelect = "エリアを選択",
 	ContextMenu_SD_AreaSelecting = "エリアを設定",
-	ContextMenu_SD_SetAreaSelectDesc = "マップ上にエリアを指定するには、左クリックを押しながらマウスをドラッグしてエリアを選択します。エリアを選択後、選択されたエリアを使う為には設定からプレイヤーの拠点を設置する事で利用可能になります。",
+	ContextMenu_SD_SetAreaSelectDesc = "マップ上にエリアを指定するには、左クリックを押しながらマウスをドラッグしてエリアを選択します。<br>エリアを選択後、選択されたエリアを使う為には設定からプレイヤーの拠点を設置する事で利用可能になります。",
 	
 	ContextMenu_SD_BaseArea = "拠点",
 	ContextMenu_SD_ChopTreeArea = "伐採エリア",
@@ -334,9 +341,9 @@ ContextMenu_JP = {
 	ContextMenu_SOption_ChancetoSpawnWithGun = "銃を持って生成される確率",
 	ContextMenu_SOption_ChancetoSpawnWithGunDesc = "ランダムな生存者が銃を持って生成される確率を定義します。",
 	ContextMenu_SOption_RaidersGuaranteed = "次の襲撃者イベントが発生するまでの時間",
-	ContextMenu_SOption_RaidersGuaranteedDesc = "襲撃者イベントは設定した時間が経過するまで発生しません。襲撃者は設定した時間を経過した後に生成されます。",
+	ContextMenu_SOption_RaidersGuaranteedDesc = "襲撃者イベントは設定した時間が経過するまで発生しません。<br>襲撃者は設定した時間を経過した後に生成されます。",
 	ContextMenu_SOption_RaidersAfterHours = "襲撃者が生成を開始する時間",
-	ContextMenu_SOption_RaidersAfterHoursDesc = "襲撃者イベントは設定された時間が経過した後にランダムで発生する様になります。上のオプションの"次の襲撃者イベントが発生するまでの時間"はこの設定の時間が経過した後に計算を始めます。",
+	ContextMenu_SOption_RaidersAfterHoursDesc = "襲撃者イベントは設定された時間が経過した後にランダムで発生する様になります。<br>上のオプションの"次の襲撃者イベントが発生するまでの時間"はこの設定の時間が経過した後に計算を始めます。",
 	ContextMenu_SOption_RaidersChance = "ランダムな襲撃者の生成率",
 	ContextMenu_SOption_RaidersChanceDesc = "襲撃者が生成を開始する時間を過ぎた後に、襲撃者イベントが発生する確率を設定します。",
 	ContextMenu_SOption_WepSpawnRate = "近接武器を持って生成される確率",
@@ -344,19 +351,19 @@ ContextMenu_JP = {
 	ContextMenu_SOption_ChancetobeHostile = "敵対状態で生成される確率",
 	ContextMenu_SOption_ChancetobeHostileDesc = "ランダムな生存者が敵対状態で生成される確率を定義します。",
 	ContextMenu_SOption_MaxHostileSpawnRate = "時間経過と共に上昇する敵対状態になる確率の最大値",
-	ContextMenu_SOption_MaxHostileSpawnRateDesc = "時間経過と共に敵対状態の生存者が増加します。設定した％が上限となり、設定値を上回る事はありません。",
+	ContextMenu_SOption_MaxHostileSpawnRateDesc = "時間経過と共に敵対状態の生存者が増加します。<br>設定した％が上限となり、設定値を上回る事はありません。",
 	ContextMenu_SOption_LockNLoad = "戦闘モードの準備",
-	ContextMenu_SOption_LockNLoadDesc = "プレイヤーと妻または夫(設定が有効になっている場合)に銃と弾薬と防具(防具モードが有効になっている場合)がゲーム開始時に支給されます。襲撃者の生成率が高い設定で遊ぶ時には最適の手段と言えるでしょう。",
+	ContextMenu_SOption_LockNLoadDesc = "プレイヤーと妻または夫(設定が有効になっている場合)に銃と弾薬と防具(防具モードが有効になっている場合)がゲーム開始時に支給されます。<br>襲撃者の生成率が高い設定で遊ぶ時には最適の手段と言えるでしょう。",
 	ContextMenu_SOption_WifeSpawn = "妻/夫の生成",
 	ContextMenu_SOption_WifeSpawnDesc = "ゲーム開始時に妻/夫が生成され、グループに加入した状態で始まります。",
 	ContextMenu_SOption_SurvivorFriendliness = "生存者の友好度",
-	ContextMenu_SOption_SurvivorFriendlinessDesc = "ランダムな生存者を自分の仲間に加える時の難易度を設定します。贈り物を沢山贈れば加入してくれる確率が高まります。拒否された場合は拒否される度に確率が下がる為、無闇に仲間に招待するのは賢い方法ではありません。",
+	ContextMenu_SOption_SurvivorFriendlinessDesc = "ランダムな生存者を自分の仲間に加える時の難易度を設定します。<br>贈り物を沢山贈れば加入してくれる確率が高まります。<br>拒否された場合は拒否される度に確率が下がる為、無闇に仲間に招待するのは賢い方法ではありません。",
 	ContextMenu_SOption_InfinitAmmo = "弾薬無限",
-	ContextMenu_SOption_InfinitAmmoDesc = "オンの場合は、生存者は銃を使う際に弾薬を必要としなくなります。オフの場合は、生存者は銃を撃つ為に弾薬または弾薬箱が必要になります。右クリックメニューで弾薬を渡す事が出来ます。弾薬が無くなった時は近くで弾薬を見つけようと動きます。",
+	ContextMenu_SOption_InfinitAmmoDesc = "オンの場合は、生存者は銃を使う際に弾薬を必要としなくなります。<br>オフの場合は、生存者は銃を撃つ為に弾薬または弾薬箱が必要になります。<br>右クリックメニューで弾薬を渡す事が出来ます。弾薬が無くなった時は近くで弾薬を見つけようと動きます。",
 	ContextMenu_SOption_FindWork = "拠点の作業自動化",
-	ContextMenu_SOption_FindWorkDesc = "オンにすると拠点内または拠点周辺の生存者は自身の所属する拠点で自動的に作業を行います。オフにすると作業を勝手に行う事は絶対に無くなります。",
+	ContextMenu_SOption_FindWorkDesc = "オンの場合は、拠点内または拠点周辺の生存者は自身の所属する拠点で自動的に作業を行います。<br>オフの場合は、作業を勝手に行う事は絶対に無くなります。",
 	ContextMenu_SOption_SurvivorHunger = "飢餓と口渇",
-	ContextMenu_SOption_SurvivorHungerDesc = "オフにすると生存者が飢えや喉の渇きに苦しむ事は無くなります。オンにすると自身に必要な物を見つけようと動きます。",
+	ContextMenu_SOption_SurvivorHungerDesc = "オフの場合は、生存者が飢えや喉の渇きに苦しむ事は無くなります。<br>オンの場合は、自身に必要な物を見つけようと自主的に動きます。",
 	
 	
 	
@@ -368,7 +375,7 @@ ContextMenu_JP = {
 	ContextMenu_speech_WifeSpeech1 = "ダーリン？",
     ContextMenu_speech_WifeSpeech2 = "ねぇ、ダーリン。どうしようか？",
     ContextMenu_speech_WifeSpeech3 = "ここより安全な場所を探した方が良いかな？",
-    ContextMenu_speech_WifeSpeech4 = "ここにいた方が良いのかな？",
+    ContextMenu_speech_WifeSpeech4 = "ここにいた方が良いかな？",
     ContextMenu_speech_WifeSpeech5 = "怖い...",
 	
     ContextMenu_speech_OutOfAmmo1 = "くそ、弾切れだ！",
@@ -384,9 +391,9 @@ ContextMenu_JP = {
 
 
     ContextMenu_speech_IDontKnowHowDoctor1 = "治療を行おうにもその知識がないんだ。",
-    ContextMenu_speech_IDontKnowHowFarming = "耕作を行おうにもその知識がないんだ。",
 
 
+	
     ContextMenu_speech_IfYouThinkSo1 = "それが最善だと言うのなら、分かったよ。",
     ContextMenu_speech_IfYouThinkSo2 = "それが最善だと言うのなら。",
 
@@ -662,7 +669,7 @@ ContextMenu_JP = {
     ContextMenu_speech_IdleChatter31 = "さっさと動いた方がいい。",
     ContextMenu_speech_IdleChatter32 = "さっさと物資を探した方がいい。",
     ContextMenu_speech_IdleChatter33 = "もっと薬をかき集めないとな。製薬会社にでも行くのが一番じゃないか？",
-    ContextMenu_speech_IdleChatter34 = "Spiffoバーガーに行きたいな..",
+    ContextMenu_speech_IdleChatter34 = "スピッフォバーガーに行きたいな..",
     ContextMenu_speech_IdleChatter35 = "インターネットが恋しいよ。",
     ContextMenu_speech_IdleChatter36 = "..少し考えていたんだが。犬は奴らを見上げられないのかな？",
     ContextMenu_speech_IdleChatter37 = "助けてくれて有難うな。",
@@ -744,7 +751,7 @@ ContextMenu_JP = {
     ContextMenu_speech_IdleChatter113 = "テレビが見たいなぁ。",
     ContextMenu_speech_IdleChatter114 = "おい、死人みたいな顔になってるぞ。ストレスが溜まってるんじゃないか？",
     ContextMenu_speech_IdleChatter115 = "おい、死人みたいな顔になってるぞ。...冗談さ。冗談！",
-    ContextMenu_speech_IdleChatter116 = "マッグルー大将の放送を聞いた事があるか？こんな状況で実際に安全だと思うか？",
+    ContextMenu_speech_IdleChatter116 = "マッグルー司令官の放送を聞いた事があるか？こんな状況で実際に安全だと思うか？",
     ContextMenu_speech_IdleChatter117 = "排除ゾーンは無駄に終わったんじゃないかな。",
     ContextMenu_speech_IdleChatter118 = "軍が全てを収めてくれると確信しているよ。",
     ContextMenu_speech_IdleChatter119 = "ここにいれば大丈夫さ。この事態が全部吹っ飛ぶのをゆっくり待とうぜ。",
