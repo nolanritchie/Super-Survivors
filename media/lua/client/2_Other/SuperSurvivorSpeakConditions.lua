@@ -147,21 +147,7 @@ function LMSConditions.doMoodleCheck(player,LMSMoodleLevel, LMSMoodleType, condi
 		end
 	
 end
-function LMSConditions.isGetCampfire(vPlayer) -- I yonked most of this function from camping.lua.
 
-	for _,vCamp in pairs(camping.campfires) do
-		local gridSquare = vCamp:getSquare()
-		if vCamp.isLit and gridSquare then
-			
-			if vPlayer and not vPlayer:isDead() and vPlayer:getCurrentSquare() and vPlayer:getCurrentSquare():DistTo(gridSquare) <= 3 and LMSConditions.TimeOfRegister ~= os.date("%M") then
-				LMSConditions.CampFireRegister = true
-				LMSConditions.TimeOfRegister = os.date("%M")
-				return true
-			end
-			
-		end
-	end
-end
 
 function LMSConditions.checkForConditions(player)
 
@@ -227,11 +213,7 @@ function LMSConditions.checkForConditions(player)
 		LMSConditions.doMoodleCheck(player,3, MoodleType.Pain, LMSConditions.VeryPainful, 15)
 		LMSConditions.doMoodleCheck(player,4, MoodleType.Pain, LMSConditions.ExtremelyPainful, 15)
 		
-		--Campfire--
 		
-		if LMSConditions.isGetCampfire() then
-			LMSConditions.generateRandomNumber(player,LMSConditions.Campfire)
-		end
 	end
 end
 
