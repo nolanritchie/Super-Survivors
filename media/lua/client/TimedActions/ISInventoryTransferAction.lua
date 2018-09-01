@@ -4,54 +4,49 @@ ISInventoryTransferAction = ISBaseTimedAction:derive("ISInventoryTransferAction"
 
 function ISInventoryTransferAction:isValid()
 	if (not self.destContainer:isExistYet()) or (not self.srcContainer:isExistYet()) then
-		--self.character:Say("1")
 		return false
 	end
 	-- Limit items per container in MP
 	if isClient() then
 		local limit = getServerOptions():getInteger("ItemNumbersLimitPerContainer")
 		if limit > 0 and (not instanceof(self.destContainer:getParent(), "IsoGameCharacter")) and self.destContainer:getItems():size()+1 > limit then
-			--self.character:Say("2")
 			return false
 		end
 	end
 
     if ISTradingUI.instance and ISTradingUI.instance:isVisible() then
-		--self.character:Say("3")
         return false;
     end
 	if not self.srcContainer:contains(self.item) then
-		--self.character:Say("4")
 		return false;
     end
-    if self.srcContainer == self.destContainer then 
-		--self.character:Say("5")
-		return false; 
-	end
+    if self.srcContainer == self.destContainer then return false; end
 
     if self.destContainer:getType()=="floor" then
         if instanceof(self.item, "Moveable") and self.item:getSpriteGrid()==nil then
             if not self.item:CanBeDroppedOnFloor() then
-				self.character:Say("6")
                 return false;
             end
         end
     end
-	if not self.destContainer:hasRoomFor(self.character, self.item) and 
-	   not ( (self.destContainer:getType()=="floor") and (self.character:getCurrentSquare():getWorldObjects():size() == 0) ) then  -- exception to allow 1 item to be dropped on floor even if it is overweight
-		--self.character:Say("7")
-		return false;
+
+	if not self.destContainer:hasRoomFor(self.character, self.item) then
+        if (self.destContainer:getType() == "floor") then
+            if (self.item:getActualWeight() < self.destContainer:getCapacity() or self.destContainer:getContentsWeight() > self.destContainer:getCapacity()) then
+                return false;
+            end
+        else
+            return false;
+        end
     end
+
     if self.destContainer:getOnlyAcceptCategory() and self.item:getCategory() ~= self.destContainer:getOnlyAcceptCategory() then
-		--self.character:Say("8")
         return false;
     end
     if self.item:getContainer() == self.srcContainer and not self.destContainer:isInside(self.item) then
-		--self.character:Say("9")
         return true;
     end
     if isClient() and self.srcContainer:getSourceGrid() and SafeHouse.isSafeHouse(self.srcContainer:getSourceGrid(), self.character:getUsername(), true) then
-		--self.character:Say("10")
         return false;
     end
     return false;
@@ -98,7 +93,6 @@ end
 ISInventoryTransferAction.putSound = nil;
 
 function ISInventoryTransferAction:start()
-
     -- stop microwave working when putting new stuff in it
     if self.destContainer and self.destContainer:getType() == "microwave" and self.destContainer:getParent() and self.destContainer:getParent():Activated() then
         self.destContainer:getParent():setActivated(false);
@@ -155,6 +149,22 @@ function ISInventoryTransferAction:perform()
         ISBaseTimedAction.perform(self);
         return;
     end
+	
+	if(self.item ~= nil) then
+		
+		local ssquare = getSourceSquareOfItem(self.item,self.character)
+		--print(tostring(ssquare))
+		if(ssquare ~= nil) then
+			local OwnerGroupId = SSGM:GetGroupIdFromSquare(ssquare)
+			local TakerGroupId = self.character:getModData().Group
+			if(OwnerGroupId ~= -1) and (TakerGroupId ~= OwnerGroupId) then
+				print("ga stealing detected!")
+				SSGM:Get(OwnerGroupId):stealingDetected(self.character)
+			end
+		end		
+		
+		
+	end
 
     if self.destContainer:isInCharacterInventory(self.character) then
 

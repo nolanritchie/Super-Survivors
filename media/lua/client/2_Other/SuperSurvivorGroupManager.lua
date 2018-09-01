@@ -22,6 +22,14 @@ function SuperSurvivorGroupManager:Get(thisID)
 
 end
 
+function SuperSurvivorGroupManager:GetGroupIdFromSquare(square)
+
+	for i=0, self.GroupCount do		
+		if (self.Groups[i]) and (self.Groups[i]:IsInBounds(square)) then return self.Groups[i]:getID() end
+	end
+	return -1
+end
+
 function SuperSurvivorGroupManager:getCount()
 	return self.GroupCount
 end

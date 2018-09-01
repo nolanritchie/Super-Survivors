@@ -56,6 +56,7 @@ end
 
 function FindThisTask:update()
 
+	if(getSpecificPlayer(0):isAsleep()) then return false end
 	if(not self:isValid()) or self.parent:getDangerSeenCount() > 0 then
 		--self.parent:Speak("completing")
 		self.Complete = true
@@ -67,8 +68,11 @@ function FindThisTask:update()
 		return false 
 	end
 	
+	
 	if(self.TargetItem == nil) then 
-		self.TargetItem = self.parent:FindThisNearBy(self.itemtype,self.COT)
+		print("going to FindThisNearBy")
+			self.TargetItem = self.parent:FindThisNearBy(self.itemtype,self.COT)
+		print("done FindThisNearBy:"..tostring(self.TargetItem))
 	end
 	
 	if(self.TargetItem == nil) then
