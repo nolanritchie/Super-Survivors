@@ -56,7 +56,7 @@ function SuperSurvivorGroup:getGroupAreaContainer(thisArea)
 	
 		for x=area[1],area[2] do
 			for y=area[3],area[4] do
-				local sq = getCell():getGridSquare(x,y,area[5])
+				local sq = getCell():getGridSquare(x,y,thisArea[5])
 				if(sq) then
 					local objs = sq:getObjects()
 					for j=0, objs:size()-1 do

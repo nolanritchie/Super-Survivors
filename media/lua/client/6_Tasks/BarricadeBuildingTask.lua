@@ -33,9 +33,9 @@ function BarricadeBuildingTask:new(superSurvivor)
 		o.Plank = inv:AddItem("Base.Plank")
 	end
 	
-	temp = inv:FindAndReturn("Nails")
-	if(not temp) then 
-		inv:AddItem("Base.Nails")
+	if inv:getItemCount("Base.Nails", true) < 2 then
+		inv:AddItem(instanceItem("Base.Nails"))
+		inv:AddItem(instanceItem("Base.Nails"))	
 	end
 	
 	superSurvivor:DebugSay("starting task barricading buidling")
@@ -78,8 +78,8 @@ function BarricadeBuildingTask:update()
 					--print("window NOT found") 
 					self.Complete = true
 					return false
-				else 
-					--print("window found") 
+				else
+					--print("window found")
 				end
 				
 			else 
@@ -100,14 +100,19 @@ function BarricadeBuildingTask:update()
 				self.parent.player:setPrimaryHandItem(self.Hammer)
 				self.parent.player:setSecondaryHandItem(self.Plank)
 				if not self.parent.player:getInventory():contains("Nails", true) then self.parent.player:getInventory():AddItem("Base.Nails") end
-				ISTimedActionQueue.add(ISBarricadeAction:new(self.parent.player, self.Window, false, false, 100));
+									
+				if(self.parent.player.setVehicle4TestCollision ~= nil) then
+					ISTimedActionQueue.add(ISBarricadeActionNEW:new(self.parent.player, self.Window, false, false, 100));
+				else
+					ISTimedActionQueue.add(ISBarricadeAction:new(self.parent.player, self.Window, false, false, 100));
+				end
+				
 				self.Window = nil
 			else
 				self.Window = nil
 			end
-		
+
 	else
 		--print("waiting for non action")
 	end
 end
-

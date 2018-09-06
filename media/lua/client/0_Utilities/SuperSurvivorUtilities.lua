@@ -357,9 +357,9 @@ function getDoorsOutsideSquare(door,player)
 	local sq2 = door:getSquare()
 	local sq3 = door:getOtherSideOfDoor(player) 
 	 
-	if( sq1:isOutside()) then return sq1
-	elseif( sq2:isOutside()) then return sq2
-	elseif( sq3:isOutside()) then return sq3
+	if(sq1 and sq1:isOutside()) then return sq1
+	elseif(sq2 and sq2:isOutside()) then return sq2
+	elseif(sq3 and sq3:isOutside()) then return sq3
 	else return nil end
 	 
 end

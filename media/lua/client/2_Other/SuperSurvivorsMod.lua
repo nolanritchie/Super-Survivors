@@ -308,7 +308,7 @@ function SuperSurvivorsInit()
 				DeadGuard:getInventory():AddItem("Base.BulletsBox");
 			end
 			
-			DeadGuard:Say("Guard: Argh!  Heart Attack!");
+			
 			DeadGuard:Kill(nil);
 			
 		end
@@ -635,7 +635,6 @@ function SuperSurvivorsRaiderManager()
 	
 	if RaidersStartTimePassed and ( RaiderResult or RaiderAtLeastTimedExceeded ) then
 		
-		--getSpecificPlayer(0):Say("starting the raider spawn")
 		
 		local hisGroup = mySS:getGroup()
 		local bounds = hisGroup:getBounds()
@@ -686,8 +685,10 @@ function SuperSurvivorsRaiderManager()
 		if(success) and (spawnSquare) then
 			getSpecificPlayer(0):getModData().LastRaidTime = hours
 			if(getSpecificPlayer(0):isAsleep()) then 
-				getSpecificPlayer(0):Say("I gotta bad feeling")
+				getSpecificPlayer(0):Say(getText("ContextMenu_SD_IGotABadFeeling"))
 				getSpecificPlayer(0):forceAwake()
+			else
+				getSpecificPlayer(0):Say(getText("ContextMenu_SD_WhatWasThatSound"));
 			end
 			local RaiderGroup = SSGM:newGroup()
 			local GroupSize = ZombRand(2,5) + math.floor(hours/(24*30))
@@ -706,6 +707,14 @@ function SuperSurvivorsRaiderManager()
 				raider:getTaskManager():AddToTop(PursueTask:new(raider,mySS:Get()))
 				if(raider:hasWeapon() == false) then raider:giveWeapon(MeleWeapons[ZombRand(1,#MeleWeapons)]) end
 			
+				local food, bag
+				local count = ZombRand(3,7)
+				bag = raider:getBag()
+				for i=1, count do
+					food = "Base."..tostring(CannedFoods[ZombRand(#CannedFoods)+1])
+					bag:AddItem(food)
+				end
+				
 			end
 			ChanceToSpawnWithGun = oldGunSpawnChance
 			RaiderGroup:AllSpokeTo()

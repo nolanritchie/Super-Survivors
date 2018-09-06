@@ -44,9 +44,9 @@ function ForageTask:update()
 					options["MedicinalPlants"] = true;
 					options["ForestGoods"] = true;
 					ISTimedActionQueue.add(ISScavengeAction:new(player, player:getCurrentSquare():getZone(), options));
-					player:Say(getText("ContextMenu_speech_Foraging"));					
+					self.parent:Speak(getText("ContextMenu_speech_Foraging"));
 				else
-					player:Say(getText("ContextMenu_speech_NoForagingHere").."(" .. tostring(player:getCurrentSquare():getZoneType()) .. ")");
+					self.parent:Speak(getText("ContextMenu_speech_NoForagingHere").."(" .. tostring(player:getCurrentSquare():getZoneType()) .. ")");
 				end
 				self.ForagedCount = self.ForagedCount + 1
 			else

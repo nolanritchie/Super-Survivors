@@ -27,6 +27,9 @@ function SuperSurvivor:new(isFemale,square)
 	o.LastGunUsed = nil
 	o.LastMeleUsed = nil
 	o.roundChambered = nil
+	o.TicksSinceSpoke = 0
+	o.JustSpoke = false
+	o.SayLine1 = ""
 	
 	o.LastSurvivorSeen = nil
 	o.LastMemberSeen = nil
@@ -92,6 +95,9 @@ function SuperSurvivor:newLoad(ID,square)
 	o.LastGunUsed = nil
 	o.LastMeleUsed = nil
 	o.roundChambered = nil
+	o.TicksSinceSpoke = 0
+	o.JustSpoke = false
+	o.SayLine1 = ""
 		
 	o.LastSurvivorSeen = nil
 	o.LastMemberSeen = nil
@@ -148,6 +154,9 @@ function SuperSurvivor:newSet(player)
 	o.LastMeleUsed = nil
 	o.roundChambered = nil
 	o.TriggerHeldDown = false
+	o.TicksSinceSpoke = 0
+	o.JustSpoke = false
+	o.SayLine1 = ""
 	
 	o.player = player
 	o.WaitTicks = 0
@@ -262,8 +271,26 @@ end
 
 function SuperSurvivor:renderName()
 
-	if(not self:isInCell()) or (self:Get():getAlpha() ~= 1.0) or (not getSpecificPlayer(0):CanSee(self.player)) then return false end
+	if (not self.JustSpoke)
+		and ( (not self:isInCell())
+				or (self:Get():getAlpha() ~= 1.0)
+				or (not getSpecificPlayer(0):CanSee(self.player))
+		) then
+		return false
+	end
 	
+	if(self.JustSpoke == true) and (self.TicksSinceSpoke == 0) then
+		self.TicksSinceSpoke = 250		
+		self.userName:ReadString(self.player:getForname() .. "\n" .. self.SayLine1)
+	elseif(self.TicksSinceSpoke > 0) then
+		self.TicksSinceSpoke = self.TicksSinceSpoke - 1
+		if(self.TicksSinceSpoke == 0) then
+			self.userName:ReadString(self.player:getForname());
+			self.JustSpoke = false
+			self.SayLine1 = ""
+		end	
+	end
+		
 	local sx = IsoUtils.XToScreen(self:Get():getX(), self:Get():getY(), self:Get():getZ(), 0);
 	local sy = IsoUtils.YToScreen(self:Get():getX(), self:Get():getY(), self:Get():getZ(), 0);
 	sx = sx - IsoCamera.getOffX() - self:Get():getOffsetX();
@@ -764,14 +791,26 @@ end
 function SuperSurvivor:DebugSay(text)
 
 	if(DebugSayEnabled) then
-		self.player:Say(text)
+		self:Speak(text)
 	end
+end
+
+function SuperSurvivor:isSpeaking()
+	if(self.JustSpoke) or (self.player:isSpeaking()) then return true
+	else return false end
 end
 
 function SuperSurvivor:Speak(text)
 
 	if(SpeakEnabled) then
-		self.player:Say(tostring(self:getName())..": "..tostring(text))
+		
+		if(self.player.setVehicle4TestCollision ~= nil) then
+			self.SayLine1 = text
+			self.JustSpoke = true
+			self.TicksSinceSpoke = 0
+		else
+			self.player:Say(tostring(self:getName())..": "..tostring(text))
+		end
 	end
 end
 
@@ -1384,7 +1423,7 @@ function SuperSurvivor:ManageXP()
 				elseif( string.match(SurvivorPerks[i], "Blunt") ) then
 					display_perk = getText("IGUI_perks_Blunt") .. " " .. display_perk
 				end
-				self.player:Say(getText("ContextMenu_SD_PerkLeveledUp_Before")..tostring(display_perk)..getText("ContextMenu_SD_PerkLeveledUp_After"))
+				self.player:Speak(getText("ContextMenu_SD_PerkLeveledUp_Before")..tostring(display_perk)..getText("ContextMenu_SD_PerkLeveledUp_After"))
 			end
 			--if(SurvivorPerks[i] == "Aiming") then self.player:Say(tostring(currentXP).."/"..tostring(XPforNextLevel)) end
 		end
