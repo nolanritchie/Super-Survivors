@@ -57,7 +57,7 @@ function PursueTask:update()
 			
 			self.parent:walkToDirect(self.LastSquareSeen)
 			
-			if(ZombRand(4) == 0) and (self.parent.player:isSpeaking() == false) then
+			if(ZombRand(4) == 0) and (self.parent:isSpeaking() == false) then
 				self.parent:Speak(getSpeech("SawHimThere"))
 			end
 			

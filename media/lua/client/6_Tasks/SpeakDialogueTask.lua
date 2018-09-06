@@ -41,7 +41,7 @@ function SpeakDialogueTask:update()
 		local distance = getDistanceBetween(self.parent.player,self.Aite)
 		if (distance > 1.8) then
 			self.parent:walkTo(self.Aite:getCurrentSquare()) 				 		
-		elseif(self.player:isSpeaking() == false) then
+		elseif(self:isSpeaking() == false) then
 			StopWalk(self.parent.player)
 			self.parent.player:faceThisObject(self.Aite)
 			

@@ -80,7 +80,14 @@ end
 
 function FarmingTask:getPlant(sq)
 
-	local plant = basicFarming.getCurrentPlanting(sq)
+	local plant
+	if(CFarmingSystem ~= nil) then
+		plant = CFarmingSystem.instance:getLuaObjectOnSquare(sq) 
+		--print("CFarmingSystem used")
+	else 
+		plant = basicFarming.getCurrentPlanting(sq)
+		--print("basic farming used")		
+	end
 	if plant then return plant
 	else return nil end
 
@@ -96,7 +103,7 @@ function FarmingTask:getNumberOf(thisType)
 			for y=area[3], area[4] do
 				local sq = getCell():getGridSquare(x,y,area[5])
 				if (sq) then
-					local plant = getPlant(sq)
+					local plant = self:getPlant(sq)
 					if(plant) and (plant.state ~= "plow") then count = count + 1 end
 				end
 			end
@@ -110,7 +117,7 @@ function FarmingTask:getNumberOf(thisType)
 			for y=area[3], area[4] do
 				local sq = getCell():getGridSquare(x,y,area[5])
 				if (sq) then
-					local plant = getPlant(sq)
+					local plant = self:getPlant(sq)
 					if(plant) and (plant.state == "plow") then count = count + 1 end
 				end
 			end
@@ -123,7 +130,7 @@ function FarmingTask:getNumberOf(thisType)
 			for y=area[3], area[4] do
 				local sq = getCell():getGridSquare(x,y,area[5])
 				if (sq) then
-					local plant = getPlant(sq)
+					local plant = self:getPlant(sq)
 					if(plant) then count = count + 1 end
 				end
 			end
@@ -141,6 +148,7 @@ function FarmingTask:getASquareToPlow()
 			local sq = getCell():getGridSquare(x,y,area[5])
 			if (sq) and (sq:isFree(false)) and (x % 2 == 0) and (y % 2 ~= 0) then
 				local plant = self:getPlant(sq)
+				print(tostring(plant))
 				if(plant == nil) then return sq end
 			end
 		end
@@ -187,7 +195,10 @@ function FarmingTask:getAPlantThatNeeds(needs)
 				local sq = getCell():getGridSquare(x,y,area[5])
 				if (sq) then
 					local plant = self:getPlant(sq)
-					if(plant) and (plant:isAlive() == false) then return plant end
+					if(plant) and (plant:isAlive() == false) then 
+						print("returning "..tostring(plant))
+						return plant 
+					end
 				end
 			end
 		end
@@ -199,7 +210,8 @@ function FarmingTask:getAPlantThatNeeds(needs)
 				local sq = getCell():getGridSquare(x,y,area[5])
 				if (sq) then
 					local plant = self:getPlant(sq)
-					if(plant) and (plant.state == "plow") then return plant end
+					
+					if(plant) and (plant.typeOfSeed == "none") then return plant end
 				end
 			end
 		end
@@ -263,7 +275,7 @@ function FarmingTask:update()
 				
 				local item = self:getWater()
 				if(item and item:isWaterSource()) then
-					if(self.parent.player:isSpeaking() == false) then self.parent:Speak(getText("ContextMenu_speech_FarmingActionWatering")) end
+					if(self.parent:isSpeaking() == false) then self.parent:Speak(getText("ContextMenu_speech_FarmingActionWatering")) end
 					ISTimedActionQueue.add(ISWaterPlantAction:new(self.parent:Get(), item, 1, self.Plant:getSquare(), 20))
 					self:ClearVars()
 				else

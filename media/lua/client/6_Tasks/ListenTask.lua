@@ -9,6 +9,7 @@ function ListenTask:new(superSurvivor, TalkToMe, selfInitiated)
 		
 	o.WasSelfInit = selfInitiated
 	o.Aite = TalkToMe
+	o.SSAite = SSM:Get(TalkToMe:getModData().ID)
 	o.parent = superSurvivor
 	o.Name = "Listen"
 	o.OnGoing = true
@@ -60,7 +61,7 @@ function ListenTask:update()
 				elseif(self.WasSelfInit) then self.parent:Speak(getText("ContextMenu_SD_HiThere"))				
 				else self.parent:Speak(getText("ContextMenu_SD_WhatYouWant")) end
 			elseif(self.parent.player:isLocalPlayer() == false) then
-				if(ZombRand(2) == 0) and (self.parent.player:isSpeaking()==false) and (self.Aite:isSpeaking() == false) then
+				if(ZombRand(2) == 0) and (self.parent:isSpeaking()==false) and (self.SSAite:isSpeaking() == false) then
 					self.parent:Speak(getSpeech("IdleChatter"))					
 				end
 			end

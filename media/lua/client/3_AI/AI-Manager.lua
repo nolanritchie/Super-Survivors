@@ -25,7 +25,7 @@ function AIManager(TaskMangerIn)
 		-------------shared ai for all -----------------------------------------------
 	
 	if (TaskMangerIn:getCurrentTask() ~= "Enter New Building") and ASuperSurvivor:isWalkingPermitted() and EnemyIsSurvivor and ASuperSurvivor:hasWeapon() and (EnemyIsSurvivorHasGun == false or ASuperSurvivor:hasGun()) and (ASuperSurvivor.LastEnemeySeen ~= nil) and (ASuperSurvivor:getDangerSeenCount() == 0) and (IHaveInjury == false) and TaskMangerIn:getCurrentTask() ~= "Pursue" then
-		if(ASuperSurvivor:Get():getModData().isHostile) and (ASuperSurvivor:Get():isSpeaking() == false) then ASuperSurvivor:Speak(getSpeech("GonnaGetYou")) end
+		if(ASuperSurvivor:Get():getModData().isHostile) and (ASuperSurvivor:isSpeaking() == false) then ASuperSurvivor:Speak(getSpeech("GonnaGetYou")) end
 		TaskMangerIn:AddToTop(PursueTask:new(ASuperSurvivor,ASuperSurvivor.LastEnemeySeen))
 	end
 	

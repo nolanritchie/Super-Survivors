@@ -127,7 +127,7 @@ function InviteToParty(test,player)
 			if(not MyAchievementManager:isComplete("MakingFriends")) then MyAchievementManager:setComplete("MakingFriends",true) end
 		end
 	
-		player:Say(getSpeech("Roger"))
+		SS:Speak(getSpeech("Roger"))
 		local GID, Group
 		if(SSM:Get(0):getGroupID() == nil) then
 			Group = SSGM:newGroup()
@@ -303,14 +303,14 @@ function ViewSurvivorInfo(test,ss)
 
 end
 
-function TalkToSurvivor(test,player)
+function TalkToSurvivor(test,SS)
 	getSpecificPlayer(0):Say(getText("ContextMenu_SD_HelloThere"))		
 	
-	if player:CanSee(getSpecificPlayer(0)) then 
-		if(player:getModData().Greeting ~= nil) then player:Say(player:getModData().Greeting)
-		else player:Say(getSpeech("IdleChatter")) end
+	if SS:Get():CanSee(getSpecificPlayer(0)) then 
+		if(SS:Get():getModData().Greeting ~= nil) then SS:Speak(player:getModData().Greeting)
+		else SS:Speak(getSpeech("IdleChatter")) end
 	else 
-		player:Say(getText("ContextMenu_SD_WhoSaidThat"));
+		SS:Speak(getText("ContextMenu_SD_WhoSaidThat"));
 	end
 end
 function CallSurvivor(test,player)
@@ -338,7 +338,7 @@ function survivorMenu(context,o)
 			local toolTip = makeToolTip(medicalOption,"Medical / First Aid Check","Walk to this survivor and medical check him, if they move the process can be interupted");
 		end		
 		if (o:getModData().isHostile ~= true) and ((SS:getTaskManager():getCurrentTask() == "Listen") or (SS:getTaskManager():getCurrentTask() == "Take Gift")) then
-			local selectOption = submenu:addOption(getText("ContextMenu_SD_TalkOption"), nil, TalkToSurvivor, o, nil);
+			local selectOption = submenu:addOption(getText("ContextMenu_SD_TalkOption"), nil, TalkToSurvivor, SS, nil);
 			local toolTip = makeToolTip(selectOption,getText("ContextMenu_SD_TalkOption"),getText("ContextMenu_SD_TalkOption_Desc"));
 			if((SS:getGroupID() ~= SSM:Get(0):getGroupID()) or SS:getGroupID() == nil) then -- not in group
 				if (o:getModData().NoParty ~= true) then
