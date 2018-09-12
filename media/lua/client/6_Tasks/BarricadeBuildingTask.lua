@@ -111,8 +111,9 @@ function BarricadeBuildingTask:update()
 			else
 				self.Window = nil
 			end
-
+		
 	else
 		--print("waiting for non action")
 	end
 end
+

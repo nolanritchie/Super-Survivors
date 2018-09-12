@@ -39,9 +39,9 @@ function FindThisTask:isComplete()
 		if(self.BagToPutIn:FindAndReturnCategory("Weapon") ~= nil) and (self.parent:Get():getPrimaryHandItem() == nil) then
 			self.parent:Get():setPrimaryHandItem(self.BagToPutIn:FindAndReturnCategory("Weapon"))
 		end
-		if(self.parent:isHungry()) and (self.parent:hasFood()) then
-			self.parent:getTaskManager():AddToTop(EatFoodTask:new(self.parent,self.parent:getFood()))
-		end
+		--if(self.parent:isHungry()) and (self.parent:hasFood()) then
+		--	self.parent:getTaskManager():AddToTop(EatFoodTask:new(self.parent,self.parent:getFood()))
+		--end
 	end
 	return self.Complete
 end
