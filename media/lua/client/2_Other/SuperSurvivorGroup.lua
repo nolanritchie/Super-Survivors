@@ -7,6 +7,7 @@ function SuperSurvivorGroup:new(GID)
 	setmetatable(o, self)
 	self.__index = self
 	
+	o.ROE = 3
 	o.YouBeenWarned = {}
 	o.ID = GID
 	o.Leader = -1
@@ -29,6 +30,27 @@ function SuperSurvivorGroup:new(GID)
 	o.GroupAreas["GuardArea"] = {0,0,0,0,0}
 	
 	return o
+
+end
+
+function SuperSurvivorGroup:setROE(tothis)
+	self.ROE = tothis
+end
+
+function SuperSurvivorGroup:isEnemy(SS,character)
+
+	-- zombie is enemy to anyone
+	if character:isZombie() then return true 
+	elseif (SS:isInGroup(character)) then return false
+	elseif (SS.player:getModData().hitByCharacter == true) and (character:getModData().semiHostile == true) then return true 
+	elseif (character:getModData().isHostile ~= SS.player:getModData().isHostile) then 
+		--print(tostring(character:getForname()).."("..tostring(character:getModData().Group)..") is enemy to "..SS:getName().."("..tostring(self:getGroupID()))
+		return true
+	elseif(self.ROE == 4) then
+		return true
+	else
+		return false
+	end 
 
 end
 

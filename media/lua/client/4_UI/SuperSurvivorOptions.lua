@@ -59,7 +59,7 @@ end
 	local writeFile = getModFileWriter("SuperSurvivors", destFile, true, false)
 
 	for index,value in pairs(SuperSurvivorOptions) do
-	
+
 		writeFile:write(tostring(index) .. " " .. tostring(value) .. "\r\n");
 	
 	end
@@ -868,4 +868,3 @@ if index then
 		
     end
 end
-

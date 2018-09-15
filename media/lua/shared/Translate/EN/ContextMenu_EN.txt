@@ -1,5 +1,9 @@
 ContextMenu_EN = {
 	
+	ContextMenu_SD_RulesOfEngagement = "Rules of Engagement",
+	ContextMenu_SD_AttackAnyoneOnSight = "Attack Anyone On Sight",
+	ContextMenu_SD_AttackHostilesOnSight = "Attack Hostiles On Sight",
+	
 	ContextMenu_SD_IGotABadFeeling = "I got a bad feeling.",
 	ContextMenu_SD_WhatWasThatSound = "What was that sound!?",
 	ContextMenu_SD_IAttackFoodThief = "That's it! Get out of here!",
