@@ -271,13 +271,7 @@ end
 
 function SuperSurvivor:renderName()
 
-	if (not self.JustSpoke)
-		and ( (not self:isInCell())
-				or (self:Get():getAlpha() ~= 1.0)
-				or (not getSpecificPlayer(0):CanSee(self.player))
-		) then
-		return false
-	end
+	if (not self.JustSpoke) and ((not self:isInCell()) or (self:Get():getAlpha() ~= 1.0) or (not getSpecificPlayer(0):CanSee(self.player))) then return false end
 	
 	if(self.JustSpoke == true) and (self.TicksSinceSpoke == 0) then
 		self.TicksSinceSpoke = 250		
@@ -1024,14 +1018,21 @@ end
 
 function SuperSurvivor:isEnemy(character)
 
-	-- zombie is enemy to anyone
-	if character:isZombie() then return true 
-	elseif (self:isInGroup(character)) then return false
-	elseif (self.player:getModData().hitByCharacter == true) and (character:getModData().semiHostile == true) then return true 
-	elseif (character:getModData().isHostile ~= self.player:getModData().isHostile) then 
-		--print(tostring(character:getForname()).."("..tostring(character:getModData().Group)..") is enemy to "..self:getName().."("..tostring(self:getGroupID()))
-		return true
-	else return false end 
+	local group = self:getGroup()
+	if(group) then
+		return group:isEnemy(self,character)
+	else
+		-- zombie is enemy to anyone
+		if character:isZombie() then return true 
+		elseif (self:isInGroup(character)) then return false
+		elseif (self.player:getModData().hitByCharacter == true) and (character:getModData().semiHostile == true) then return true 
+		elseif (character:getModData().isHostile ~= self.player:getModData().isHostile) then 
+			--print(tostring(character:getForname()).."("..tostring(character:getModData().Group)..") is enemy to "..self:getName().."("..tostring(self:getGroupID()))
+			return true
+		else 
+			return false
+		end 
+	end
 
 end
 

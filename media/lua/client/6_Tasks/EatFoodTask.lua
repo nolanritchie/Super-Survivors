@@ -64,16 +64,9 @@ function EatFoodTask:update()
 				
 		if(self.EatingStarted == false) and (not self.parent.player:getInventory():contains(self.TheFood)) then
 			self.parent:Speak(getText("ContextMenu_SD_Takes_Before") .. self.TheFood:getDisplayName() .. getText("ContextMenu_SD_Takes_After"))
-			--self.TheFood:getContainer():Remove(self.TheFood);
-			--self.parent.player:getInventory():AddItem(self.TheFood);
-			if(self.TheFood:getContainer() ~= nil) then ISTimedActionQueue.add(ISInventoryTransferAction:new (self.parent.player, self.TheFood, self.TheFood:getContainer(), self.parent.player:getInventory(), 20))
-			elseif(self.TheFood:getWorldItem() ~= nil) then
-				self.PlayerBag:AddItem(self.TheFood)
-				self.TheFood:getWorldItem():removeFromSquare()
-				self.TheFood:setWorldItem(nil)
-			else
-				self.parent:ensureInInv(self.TheFood)
-			end
+			
+			self.TheFood = self.parent:ensureInInv(self.TheFood)
+			
 		elseif(self.EatingStarted == false) and (self.parent.player:getInventory():contains(self.TheFood)) then
 			
 			local HungerChange = self.TheFood:getHungerChange()

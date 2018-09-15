@@ -73,6 +73,7 @@ function AIManager(TaskMangerIn)
 			print("FindThisTask Food added")
 			TaskMangerIn:AddToTop(FindThisTask:new(ASuperSurvivor, "Food", "Category", 1))
 		elseif (ASuperSurvivor:hasFood()) then
+			print("hasFood: EatFoodTask Food added")
 			TaskMangerIn:AddToTop(EatFoodTask:new(ASuperSurvivor,ASuperSurvivor:getFood()))
 		end
 	end

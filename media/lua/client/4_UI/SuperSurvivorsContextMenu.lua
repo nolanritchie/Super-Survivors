@@ -644,17 +644,17 @@ function SurvivorsFillWorldObjectContextMenu(player, context, worldobjects, test
 	
 	local SurvivorOptions = context:addOption(getText("ContextMenu_SD_SurvivorOptions"), worldobjects, nil);
 	local submenu = context:getNew(context);
-	--[[
-	local RulesOfEngagementOption = submenu:addOption("Rules of Engagement", worldobjects, nil);
+	
+	local RulesOfEngagementOption = submenu:addOption(getText("ContextMenu_SD_RulesOfEngagement"), worldobjects, nil);
 	local subsubmenu = submenu:getNew(submenu);
 	
-	makeToolTip(subsubmenu:addOption("Attack Anything", nil, SetRulesOfEngagement, 4),"Rules of Engagement","Shoot or Attack on sight Anything that may come along. Zombies, hostile survivors, friendly survivors neutral. Only party members are the exception");
-	makeToolTip(subsubmenu:addOption("Attack Hostiles", nil, SetRulesOfEngagement, 3),"Rules of Engagement","Shoot or Attack on sight Anything hostile that may come along. Zombies or obviously hostile survivors");
-	makeToolTip(subsubmenu:addOption("Attack Zombies", nil, SetRulesOfEngagement, 2),"Rules of Engagement","Shoot or Attack on sight Any zombies that may come along.");
-	makeToolTip(subsubmenu:addOption("No Attacking", nil, SetRulesOfEngagement, 1),"Rules of Engagement","Do not shoot or attack anything or anyone. Just avoid when possible.");
+	makeToolTip(subsubmenu:addOption(getText("ContextMenu_SD_AttackAnyoneOnSight"), nil, SetRulesOfEngagement, 4),"Rules of Engagement","Shoot or Attack on sight Anything that may come along. Zombies, hostile survivors, friendly survivors neutral. Only party members are the exception");
+	makeToolTip(subsubmenu:addOption(getText("ContextMenu_SD_AttackHostilesOnSight"), nil, SetRulesOfEngagement, 3),"Rules of Engagement","Shoot or Attack on sight Anything hostile that may come along. Zombies or obviously hostile survivors");
+	--makeToolTip(subsubmenu:addOption("Attack Zombies", nil, SetRulesOfEngagement, 2),"Rules of Engagement","Shoot or Attack on sight Any zombies that may come along.");
+	--makeToolTip(subsubmenu:addOption("No Attacking", nil, SetRulesOfEngagement, 1),"Rules of Engagement","Do not shoot or attack anything or anyone. Just avoid when possible.");
 	
 	submenu:addSubMenu(RulesOfEngagementOption, subsubmenu);
-	]]
+	
 	local MeleOrGunOption = submenu:addOption(getText("ContextMenu_SD_CallToArms"), worldobjects, nil);
 	subsubmenu = submenu:getNew(submenu);
 	
@@ -669,8 +669,13 @@ end
 
 function SetRulesOfEngagement(test,value)
 	getSpecificPlayer(0):getModData().ROE = value ;
-	ROE = value;
-	getSpecificPlayer(0):Say(getText("ContextMenu_SD_ROESet"));
+	
+	local SS = SSM:Get(0)
+	local group = SS:getGroup()
+	if(group) then
+		group:setROE(value)
+		getSpecificPlayer(0):Say(getText("ContextMenu_SD_ROESet"));
+	end
 end
 
 function SetMeleOrGun(test,value)
