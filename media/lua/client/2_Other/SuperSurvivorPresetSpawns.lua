@@ -209,7 +209,7 @@ PresetSpawns[#PresetSpawns+1] = {Greeting = "I\'ve had my gun sight on you for t
 PresetSpawns[#PresetSpawns+1] = {Greeting = "Oh my God! Normal people for a change! This is my BOOMSTICK! Groovy. Found it off a dead dude. Luckily they sell ammo at S-MART",PerkName = "Aiming",PerkLevel = 3,isFemale=false,  Name = "B-Movie Actor", X = 13643, Y = 5868, Z = 0 , Weapon = getWeapon("Base.Shotgun"), Orders = "Patrol", isHostile = false,Patrolling=true, PX=0,PY=15};
 
 PresetSpawns[#PresetSpawns+1] = {Greeting = "Honey, we\'ve got some visitors. Stop looking for where you left the champagne and get over here!",isFemale=true,  Name = "Shopper Kim", X = 13923, Y = 5829, Z = 2 , Weapon = "Base.KitchenKnife", Orders = "Patrol", isHostile = true,Patrolling=true, PX=0,PY=15};
-PresetSpawns[#PresetSpawns+1] = {Greeting = "What'\s up Goldigger?...Nothing in life is promised except.... death!",isFemale=false,  Name = "Shopper Kanye", X = 13923, Y = 5824, Z = 2 , Weapon = getWeapon("Base.Pistol"), Orders = "Patrol", isHostile = true,Patrolling=true, PX=-15,PY=0};
+PresetSpawns[#PresetSpawns+1] = {Greeting = "What\'s up Goldigger?...Nothing in life is promised except.... death!",isFemale=false,  Name = "Shopper Kanye", X = 13923, Y = 5824, Z = 2 , Weapon = getWeapon("Base.Pistol"), Orders = "Patrol", isHostile = true,Patrolling=true, PX=-15,PY=0};
 
 PresetSpawns[#PresetSpawns+1] = {Greeting = "Ya better be real cool buddy, or I\'ll shovel your sorry ass outta here.",PerkName = "Blunt",PerkLevel = 3,isFemale=false,  Name = "Construction Worker", X = 14087, Y = 5453, Z = 0 , Weapon = "Base.Shovel", Orders = "Standing Ground", isHostile = false};
 
