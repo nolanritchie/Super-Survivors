@@ -1424,7 +1424,7 @@ function SuperSurvivor:ManageXP()
 				elseif( string.match(SurvivorPerks[i], "Blunt") ) then
 					display_perk = getText("IGUI_perks_Blunt") .. " " .. display_perk
 				end
-				self.player:Speak(getText("ContextMenu_SD_PerkLeveledUp_Before")..tostring(display_perk)..getText("ContextMenu_SD_PerkLeveledUp_After"))
+				self:Speak(getText("ContextMenu_SD_PerkLeveledUp_Before")..tostring(display_perk)..getText("ContextMenu_SD_PerkLeveledUp_After"))
 			end
 			--if(SurvivorPerks[i] == "Aiming") then self.player:Say(tostring(currentXP).."/"..tostring(XPforNextLevel)) end
 		end
