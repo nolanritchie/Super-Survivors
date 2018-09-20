@@ -1,5 +1,7 @@
 ContextMenu_EN = {
 	
+	ContextMenu_SD_NoPreSetSpawn = "Disable All Pre-set/Unique Survivors",
+	ContextMenu_SD_NoPreSetSpawnDesc = "Disable All Pre-set/Unique Survivors",
 	ContextMenu_SD_RulesOfEngagement = "Rules of Engagement",
 	ContextMenu_SD_AttackAnyoneOnSight = "Attack Anyone On Sight",
 	ContextMenu_SD_AttackHostilesOnSight = "Attack Hostiles On Sight",
