@@ -156,6 +156,7 @@ function SuperSurvivorsLoadGridsquare(square)
 			end
 			
 			SuperSurvivorBravery = SuperSurvivorGetOptionValue("Bravery")
+			NoPreSetSpawn = SuperSurvivorGetOptionValue("NoPreSetSpawn")
 			SuperSurvivorSpawnRate = SuperSurvivorGetOptionValue("SpawnRate")
 			ChanceToSpawnWithGun = SuperSurvivorGetOptionValue("GunSpawnRate")
 			ChanceToSpawnWithWep = SuperSurvivorGetOptionValue("WepSpawnRate")

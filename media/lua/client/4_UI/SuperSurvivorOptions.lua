@@ -27,6 +27,7 @@ function SuperSurvivorGetOptionValue(option)
 	elseif(option == "HostileSpawnRate") then return (num * 5) - 5
 	elseif(option == "MaxHostileSpawnRate") then return (num * 5) - 5
 	elseif(option == "InfinitAmmo") then return (num ~= 1)
+	elseif(option == "NoPreSetSpawn") then return (num ~= 1)
 	elseif(option == "FindWork") then return (num == 1)
 	elseif(option == "SurvivorHunger") then return (num == 1)
 	elseif(option == "SurvivorFriendliness") then return (10 - ((num-1)*2)) -- 1 = 10, 2 = 8, 3 = 6
@@ -59,7 +60,7 @@ end
 	local writeFile = getModFileWriter("SuperSurvivors", destFile, true, false)
 
 	for index,value in pairs(SuperSurvivorOptions) do
-
+	
 		writeFile:write(tostring(index) .. " " .. tostring(value) .. "\r\n");
 	
 	end
@@ -110,8 +111,9 @@ if(not SuperSurvivorOptions["WepSpawnRate"]) then SuperSurvivorOptions["WepSpawn
 if(not SuperSurvivorOptions["HostileSpawnRate"]) then SuperSurvivorOptions["HostileSpawnRate"] = 1 end
 if(not SuperSurvivorOptions["MaxHostileSpawnRate"]) then SuperSurvivorOptions["MaxHostileSpawnRate"] = 17 end
 if(not SuperSurvivorOptions["InfinitAmmo"]) then SuperSurvivorOptions["InfinitAmmo"] = 1 end
+if(not SuperSurvivorOptions["NoPreSetSpawn"]) then SuperSurvivorOptions["NoPreSetSpawn"] = 1 end
 if(not SuperSurvivorOptions["FindWork"]) then SuperSurvivorOptions["FindWork"] = 1 end
-if(not SuperSurvivorOptions["SurvivorHunger"]) then SuperSurvivorOptions["InfinitAmmo"] = 1 end
+if(not SuperSurvivorOptions["SurvivorHunger"]) then SuperSurvivorOptions["SurvivorHunger"] = 1 end
 if(not SuperSurvivorOptions["SurvivorFriendliness"]) then SuperSurvivorOptions["SurvivorFriendliness"] = 4 end
 
 if(not SuperSurvivorOptions["RaidersAtLeastHours"]) then SuperSurvivorOptions["RaidersAtLeastHours"] = 13 end
@@ -323,7 +325,32 @@ if index then
 		self.gameOptions:add(gameOption)
 		
 		
+		y = y + spacing
 		
+		
+		
+		local options = {getText("ContextMenu_SD_Off"),getText("ContextMenu_SD_On")}
+		local gunspawnrateCombo = self:addCombo(splitpoint, y, comboWidth, 20,getText("ContextMenu_SD_NoPreSetSpawn"), options, 1)
+		gunspawnrateCombo:setToolTipMap({defaultTooltip = getText("ContextMenu_SD_NoPreSetSpawnDesc")});
+		
+		gameOption = GameOption:new('NoPreSetSpawn', gunspawnrateCombo)
+		function gameOption.toUI(self)
+			local box = self.control
+			box.selected = SuperSurvivorGetOption("NoPreSetSpawn")
+		end
+		function gameOption.apply(self)
+			local box = self.control
+			if box.options[box.selected] then
+				SuperSurvivorSetOption("NoPreSetSpawn",box.selected)
+				print("setting survivor option")
+			else
+				print("error could not set survivor option")
+			end
+		end
+		function gameOption:onChange(box)
+			print("option changed to ".. tostring(box.selected))
+		end
+		self.gameOptions:add(gameOption)
 		
 		
 		y = y + spacing
@@ -868,3 +895,4 @@ if index then
 		
     end
 end
+

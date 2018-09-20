@@ -421,6 +421,8 @@ function SuperSurvivorPresetSpawn(square)
 	
 	if(RPresetSpawns ~= nil) then
 		
+		if(NoPreSetSpawn) then return false end
+		
 		local x = square:getX();
 		local y = square:getY();
 		local z = square:getZ();
