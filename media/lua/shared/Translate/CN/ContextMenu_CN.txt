@@ -1,4 +1,9 @@
-ContextMenu_EN = {
+ContextMenu_CN = {
+	ContextMenu_SD_NoPreSetSpawn = "禁止全部預置/唯壹的幸存者",
+	ContextMenu_SD_NoPreSetSpawnDesc = "禁止全部預置/唯壹的幸存者",
+	ContextMenu_SD_RulesOfEngagement = "交戰規則",
+	ContextMenu_SD_AttackAnyoneOnSight = "攻擊視線內任意目標",
+	ContextMenu_SD_AttackHostilesOnSight = "攻擊視線內敵對目標",
 	
 	ContextMenu_SD_IGotABadFeeling = "我的直觉告诉我这是不祥之兆。",
 	ContextMenu_SD_WhatWasThatSound = "那是什么声音!?",

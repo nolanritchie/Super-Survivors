@@ -251,13 +251,34 @@ function getCoverValue(obj)
 	elseif (obj:getObjectName() == "Tree") then return 25
 	elseif (obj:getObjectName() == "Window") then return 70
 	elseif (obj:getObjectName() == "Door") then return 80
-	elseif (obj:getObjectName() == "IsoObject") then return 50
+	elseif (obj:getObjectName() == "Counter") then return 80
+	elseif (obj:getObjectName() == "IsoObject") then return 10 -- drastically lowered because small stuff like garbage was blocking shots
 	else return 0 end
 end
 
-function SuperSurvivorPVPHandle(wielder, victim, weapon, damage)
+function getGunShotWoundBP(player)
 
-		
+	local BD = player:getBodyDamage()
+	local bps = BD:getBodyParts() ;
+	local foundBP = false
+	local list = {};
+	if(bps) then
+		for i=1, bps:size()-1 do		
+			if(bps:get(i) ~= nil) and ( bps:get(i):haveBullet() ) and ( bps:get(i):getHealth() > 0)  then
+				table.insert(list,i);
+				foundBP = true
+			end
+		end
+	end
+	if(not foundBP) then return nil end
+	local result = ZombRand(1,#list)
+	local index = list[result]
+	local outBP = bps:get(index)
+	return outBP
+end
+
+
+function SuperSurvivorPVPHandle(wielder, victim, weapon, damage)
 
 	local SSW = SSM:Get(wielder:getModData().ID)
 	local SSV = SSM:Get(victim:getModData().ID)
@@ -281,9 +302,9 @@ function SuperSurvivorPVPHandle(wielder, victim, weapon, damage)
 	if fakehit then return false end
 	
 
-		
 	--- obj cover calculations
 	if(instanceof(weapon,"HandWeapon")) and (weapon:isAimedFirearm()) and (instanceof(victim,"IsoPlayer")) then
+		
 		local angle = wielder:getAngle()
 		local dir = IsoDirections.fromAngle(angle)
 		dir = IsoDirections.reverse(dir)
@@ -318,12 +339,46 @@ function SuperSurvivorPVPHandle(wielder, victim, weapon, damage)
 		
 		
 		if coveredFire then 
-			victim:Say("!!") 
+			SSV:Speak("!!") 
 			if(victim.setAvoidDamage ~= nil) then victim:setAvoidDamage(true) end
 			return false 	
+		
 		end
 	end
+	
 	--- obj cover calculations	END
+	
+		-- add extra damage, bc bullet damage so low
+		
+			--if(LastGuyHit == nil) or (victim ~= LastGuyHit) then
+			--	LastGuyHitCount = 1
+			--	LastGuyHit = victim
+			--elseif(victim ~= getSpecificPlayer(0)) then
+			--	LastGuyHitCount = LastGuyHitCount + 1
+			--end
+			--if(victim ~= getSpecificPlayer(0)) then wielder:Say(tostring(LastGuyHitCount)) end
+	
+		--	local extraDamage = ZombRand(150,250);
+			local shotPartshotPart = getGunShotWoundBP(victim)
+			if(shotPartshotPart) then
+				--if( shotPartshotPart:getType() == "Head") then extraDamage = 40 
+				--elseif( shotPartshotPart:getType() == "Neck") then extraDamage = 30
+				--elseif( shotPartshotPart:getType() == "Torso_Lower") then extraDamage = 30
+				--elseif( shotPartshotPart:getType() == "Torso_Upper") then extraDamage = 35
+				--end
+				extraDamage = (damage*12)
+				--print("added " .. tostring(extraDamage) .. " damage to gun shot wound on " .. tostring(shotPartshotPart:getType()) .. " to player number " .. tostring(victim:getModData().ID))
+				--print("pre getHealth is " .. tostring(shotPartshotPart:getHealth()))
+				--print("pre getHealth is " .. tostring(victim:getBodyDamage():getHealth()))
+				
+				shotPartshotPart:AddDamage(extraDamage);
+				--victim:getBodyDamage():DamageFromWeapon(weapon);
+				victim:update();
+				
+				--print("post getHealth is " .. tostring(shotPartshotPart:getHealth()) ) 
+				--print("post getHealth is " .. tostring(victim:getBodyDamage():getHealth()) ) 
+				
+			end
 	
 	
 	if instanceof(victim, "IsoPlayer") then	
