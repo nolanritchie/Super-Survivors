@@ -12,8 +12,12 @@ function AIManager(TaskMangerIn)
 	local EnemySuperSurvivor = nil
 	local EnemyIsSurvivorHasGun = false
 	if(EnemyIsSurvivor) then 
-		EnemySuperSurvivor = SSM:Get(ASuperSurvivor.LastEnemeySeen:getModData().ID) 
-		EnemyIsSurvivorHasGun = EnemySuperSurvivor:hasGun()
+		local id = ASuperSurvivor.LastEnemeySeen:getModData().ID
+		
+		EnemySuperSurvivor = SSM:Get(id) 
+		if(EnemySuperSurvivor) then
+			EnemyIsSurvivorHasGun = EnemySuperSurvivor:hasGun()
+		end
 	end
 	local IHaveInjury = ASuperSurvivor:HasInjury()
 	local IsInAction = ASuperSurvivor:isInAction()
