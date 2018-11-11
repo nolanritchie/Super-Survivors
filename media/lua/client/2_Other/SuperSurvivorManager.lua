@@ -8,7 +8,7 @@ function SuperSurvivorManager:new()
 	self.__index = self
 		
 	o.SuperSurvivors = {}
-	o.SurvivorCount = 0
+	o.SurvivorCount = 3
 	
 	return o
 
@@ -16,6 +16,14 @@ end
 
 function SuperSurvivorManager:init()
 	self.SuperSurvivors[0] = SuperSurvivor:newSet(getSpecificPlayer(0))
+	self.SuperSurvivors[0]:setID(0)
+end
+function SuperSurvivorManager:setPlayer(player,ID)
+	self.SuperSurvivors[ID] = SuperSurvivor:newSet(player)
+	self.SuperSurvivors[0]:setID(ID)
+	self.SuperSurvivors[0]:setName("Player " .. tostring(ID))
+	
+	return self.SuperSurvivors[ID] ;
 end
 
 function SuperSurvivorManager:LoadSurvivor(ID, square)

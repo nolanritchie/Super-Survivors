@@ -744,6 +744,23 @@ end
 
 
 Events.EveryTenMinutes.Add(SuperSurvivorsRaiderManager);
+NumberOfLocalPlayers = 0
+function SSCreatePlayerHandle(newplayerID)
+	local newplayer = getSpecificPlayer(newplayerID)
+	print("OnCreatePlayer event triggered in Super Survivors ID:"..tostring(newplayerID))
+	local MD = newplayer:getModData()
+	if(not MD.ID) and (newplayer:getPlayerNum() ~= 0) then
+		local MainSS = SSM:Get(0);
+		local MainSSGroup = MainSS:getGroup()
+		NumberOfLocalPlayers = 	NumberOfLocalPlayers + 1
+		local newSS = SSM:setPlayer(newplayer,NumberOfLocalPlayers)
+		newSS:setID(NumberOfLocalPlayers)
+		print("new survivor ID is "..tostring( newSS:getID()))
+		MainSSGroup:addMember(newSS, "Guard");
+		
+	end
+
+end
 
 
-
+Events.OnCreatePlayer.Add(SSCreatePlayerHandle)
