@@ -78,8 +78,8 @@ function BarricadeBuildingTask:update()
 					--print("window NOT found") 
 					self.Complete = true
 					return false
-				else
-					--print("window found")
+				else 
+					--print("window found") 
 				end
 				
 			else 
