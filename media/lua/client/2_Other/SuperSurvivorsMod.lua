@@ -545,15 +545,28 @@ function supersurvivortemp(keyNum)
 			local index = SuperSurvivorGetOption("SSHotkey4")
 			SuperSurvivorsHotKeyOrder(index)
 		elseif( keyNum == 0) then 
-			if(getSpecificPlayer(0):isForceOverrideAnim()) then
-				getSpecificPlayer(0):setForceOverrideAnim(false)
-				getSpecificPlayer(0):getModData().ForceAnim = nil
-				getSpecificPlayer(0):Say("anim un set")
+			local SS = SSM:Get(0);
+			local Group = SS:getGroup();
+			
+			local storagecontainer = Group:getGroupAreaContainer("FoodStorageArea")
+			local dest 
+			if(storagecontainer) then
+				dest = storagecontainer
 			else
-				getSpecificPlayer(0):Say("anim set")
-				getSpecificPlayer(0):getModData().ForceAnim = "Walk_Aim_Bat"
-				getSpecificPlayer(0):setForceOverrideAnim(true)
+				dest = Group:getGroupAreaCenterSquare("FoodStorageArea")
 			end
+			if(not dest) then dest = self.parent.player:getCurrentSquare() end
+			
+			
+			if(storagecontainer) then
+				getSpecificPlayer(0):Say(tostring(storagecontainer));
+				GTask = CleanInvTask:new(SS,dest);
+			else
+				
+			end
+		elseif( keyNum == 0) then 
+			getSpecificPlayer(0):Say(tostring("updating"));
+				GTask:update();
 		end
 	end
 
@@ -731,6 +744,23 @@ end
 
 
 Events.EveryTenMinutes.Add(SuperSurvivorsRaiderManager);
+NumberOfLocalPlayers = 0
+function SSCreatePlayerHandle(newplayerID)
+	local newplayer = getSpecificPlayer(newplayerID)
+	print("OnCreatePlayer event triggered in Super Survivors ID:"..tostring(newplayerID))
+	local MD = newplayer:getModData()
+	if(not MD.ID) and (newplayer:getPlayerNum() ~= 0) then
+		local MainSS = SSM:Get(0);
+		local MainSSGroup = MainSS:getGroup()
+		NumberOfLocalPlayers = 	NumberOfLocalPlayers + 1
+		local newSS = SSM:setPlayer(newplayer,NumberOfLocalPlayers)
+		newSS:setID(NumberOfLocalPlayers)
+		print("new survivor ID is "..tostring( newSS:getID()))
+		MainSSGroup:addMember(newSS, "Guard");
+		
+	end
+
+end
 
 
-
+Events.OnCreatePlayer.Add(SSCreatePlayerHandle)

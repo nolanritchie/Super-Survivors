@@ -322,10 +322,15 @@ function SuperSurvivorGroup:addMember(newSurvivor, Role)
 		print("no current group")
 	end
 	
+	if(newSurvivor:getID() == nil) then
+		print("cant add survivor to group because id is nil")
+		return false
+	end
+	
 	--if(newSurvivor:getGroupID() == self.ID) then return false end
 	if(Role == nil) then Role = "Worker" end
 	if(newSurvivor ~= nil) and (not has_value(self.Members,newSurvivor:getID())) then 	
-		print("adding new survivor"..newSurvivor:getID().." to group"..tostring(self.ID) .. " role:" .. tostring(Role))
+		print("adding new survivor"..tostring(newSurvivor:getID()).." to group"..tostring(self.ID) .. " role:" .. tostring(Role))
 		table.insert(self.Members, newSurvivor:getID())
 		
 		newSurvivor:setGroupRole(Role)

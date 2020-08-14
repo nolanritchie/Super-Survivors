@@ -40,13 +40,12 @@ function CleanInvTask:update()
 	
 	if(not self:isValid()) then return false end
 	
-	if(self.parent:isInAction() == false) then
+	if (self.parent:isInAction() == false) then
 		
 		local distance = getDistanceBetween(self.parent.player,self.TheDropSquare)
 		if (distance > 2.0) then
 			self.parent:walkTo(self.TheDropSquare) 	
 		else		
-			
 			local droppedSomething = false
 			local armorModEnabled = (isModEnabled("ArmorMod"))
 			local square = self.parent:getFacingSquare()

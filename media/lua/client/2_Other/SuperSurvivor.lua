@@ -271,7 +271,7 @@ end
 
 function SuperSurvivor:renderName()
 
-	if (not self.JustSpoke) and ((not self:isInCell()) or (self:Get():getAlpha() ~= 1.0) or (not getSpecificPlayer(0):CanSee(self.player))) then return false end
+	if (not self.userName) or ((not self.JustSpoke) and ((not self:isInCell()) or (self:Get():getAlpha() ~= 1.0) or (not getSpecificPlayer(0):CanSee(self.player)))) then return false end
 	
 	if(self.JustSpoke == true) and (self.TicksSinceSpoke == 0) then
 		self.TicksSinceSpoke = 250		

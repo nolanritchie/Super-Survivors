@@ -1,9 +1,15 @@
-ContextMenu_EN = {
+ContextMenu_CN = {
+
+	ContextMenu_SD_NoPreSetSpawn = "禁止全部预置/唯一的幸存者",
+ContextMenu_SD_NoPreSetSpawnDesc = "禁止全部预置/唯一的幸存者",
+ContextMenu_SD_RulesOfEngagement = "交战规则",
+ContextMenu_SD_AttackAnyoneOnSight = "攻击视线内任意目标",
+ContextMenu_SD_AttackHostilesOnSight = "攻击视线内敌对目标",
 	
 	ContextMenu_SD_IGotABadFeeling = "我的直觉告诉我这是不祥之兆。",
-	ContextMenu_SD_WhatWasThatSound = "那是什么声音!?",
-	ContextMenu_SD_IAttackFoodThief = "就是那样！！给我滚出去！！",
-	ContextMenu_SD_IWarnFoodThief = "嘿！你这个小偷!!不要拿走我们的食物或者其他东西！！",
+ContextMenu_SD_WhatWasThatSound = "那是什么声音!?",
+ContextMenu_SD_IAttackFoodThief = "就是那样！！给我滚出去！！",
+ContextMenu_SD_IWarnFoodThief = "嘿！你这个小偷!!不要拿走我们的食物或者其他东西！！",
 	
 	ContextMenu_SD_OrderAll = "命令全部 ",
 	ContextMenu_SShotkey1 = "快捷键 1 指令",
